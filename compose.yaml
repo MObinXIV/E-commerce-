@@ -1,0 +1,33 @@
+services:
+  postgres:
+    container_name: postgres_sql-ecommerce
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=ecommerce'
+      - 'POSTGRES_PASSWORD=secret'
+      - 'POSTGRES_USER=ecommerce'
+      - 'PGDATA=/var/lib/postgresql/data'
+    volumes:
+      - 'postgres:/var/lib/postgresql/data'
+    ports:
+      - '5432:5432'
+    networks:
+      - backend
+    restart: unless-stopped
+
+  mail_dev:
+    container_name: mail_dev_ecommerce
+    image: maildev/maildev
+    ports:
+      - '1080:80'
+      - '1025:1025'
+    networks:
+      - backend  # ✅ Correct way to reference network
+
+volumes:
+  postgres:
+    driver: local
+
+networks:
+  backend:
+    driver: bridge  # ✅ Correct placement of driver
