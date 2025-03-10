@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ecommerce
+    username: username
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  mail:
+    host: localhost
+    port: 1025
+    username: Mohamed
+    password: secret
+    properties:
+        mail:
+            smtp:
+            auth: true
+            starttls:
+                enable: true
+            ssl:
+                trust: '*' # ✅ Correct way to allow all certificates
+            connectiontimeout: 5000
+            timeout: 3000
+            writetimeout: 5000
