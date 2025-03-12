@@ -5,12 +5,12 @@ services:
     environment:
       - 'POSTGRES_DB=ecommerce'
       - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=ecommerce'
+      - 'POSTGRES_USER=username'
       - 'PGDATA=/var/lib/postgresql/data'
     volumes:
       - 'postgres:/var/lib/postgresql/data'
     ports:
-      - '5432:5432'
+      - '5431:5432'
     networks:
       - backend
     restart: unless-stopped
