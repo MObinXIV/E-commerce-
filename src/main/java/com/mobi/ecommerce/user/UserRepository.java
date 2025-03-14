@@ -1,2 +1,10 @@
-package com.mobi.ecommerce.user;public interface UserRepository {
+package com.mobi.ecommerce.user;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+import java.util.UUID;
+
+public interface UserRepository extends JpaRepository<User, UUID> {
+    Optional<User> findByEmail(String email);
 }
