@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/ecommerce
+    url: jdbc:postgresql://localhost:5431/ecommerce
     username: username
-    password: password
-    driver-class-name: org.postgresql.Driver
+    password: secret
+    driver-class-name: org.postgresql.Driver  # Remove if using Spring Boot 3+
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,16 +15,17 @@ spring:
   mail:
     host: localhost
     port: 1025
-    username: Mohamed
-    password: secret
+    username: Mohamed  # Remove if using MailHog (not required)
+    password: secret  # Remove if using MailHog
     properties:
-        mail:
-            smtp:
-            auth: true
-            starttls:
-                enable: true
-            ssl:
-                trust: '*' # ✅ Correct way to allow all certificates
-            connectiontimeout: 5000
-            timeout: 3000
-            writetimeout: 5000
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            trust: "*"
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+
