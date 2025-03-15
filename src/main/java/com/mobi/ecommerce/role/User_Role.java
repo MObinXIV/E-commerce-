@@ -6,65 +6,62 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Entity (name = "User_Role")
+@Entity
 @Table(name = "user_role")
 public class User_Role {
     @EmbeddedId
     private User_RoleId id;
+
     @ManyToOne
     @MapsId("userId")
     @JoinColumn(name = "user_id",
-            foreignKey = @ForeignKey(name="userRole_user_id_fk")
-    )
+            foreignKey = @ForeignKey(name="userRole_user_id_fk"))
     private User user;
+
     @ManyToOne
     @MapsId("roleId")
     @JoinColumn(name = "role_id",
-            foreignKey = @ForeignKey(name="userRole_role_id_fk")
-    )
+            foreignKey = @ForeignKey(name="userRole_role_id_fk"))
     private Role role;
-    @Column(
-            name = "created_at",
-            nullable = false,
-            columnDefinition = "TIMESTAMP WITHOUT TIME ZONE"
-    )
+
+    @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime createdAt;
+
+    public User_Role() {}
 
     public User_Role(User user, Role role) {
         this.user = user;
         this.role = role;
-
-    }
-
-    public User_Role() {
+        this.id = new User_RoleId(user.getId(), role.getId()); // ✅ Fix: Initialize ID
+        this.createdAt = LocalDateTime.now(); // ✅ Optional: Auto-set timestamp
     }
 
     public User_RoleId getId() {
         return id;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
     public void setId(User_RoleId id) {
         this.id = id;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     public void setUser(User user) {
         this.user = user;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
@@ -83,5 +80,4 @@ public class User_Role {
     public int hashCode() {
         return Objects.hash(id);
     }
-
 }

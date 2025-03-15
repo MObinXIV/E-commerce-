@@ -2,37 +2,51 @@ package com.mobi.ecommerce.role;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-
+import java.io.Serializable;
+import java.util.Objects;
 import java.util.UUID;
 
 @Embeddable
-public class User_RoleId {
+public class User_RoleId implements Serializable {
     @Column(name = "user_id")
-    private UUID student_id;
-    @Column(name="role_id")
-    private UUID role_id;
+    private UUID userId;
 
-    public User_RoleId(UUID student_id, UUID role_id) {
-        this.student_id = student_id;
-        this.role_id = role_id;
+    @Column(name = "role_id")
+    private UUID roleId;
+
+    public User_RoleId() {}
+
+    public User_RoleId(UUID userId, UUID roleId) {
+        this.userId = userId;
+        this.roleId = roleId;
     }
 
-    public User_RoleId() {
+    public UUID getUserId() {
+        return userId;
     }
 
-    public UUID getStudent_id() {
-        return student_id;
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 
-    public UUID getRole_id() {
-        return role_id;
+    public UUID getRoleId() {
+        return roleId;
     }
 
-    public void setStudent_id(UUID student_id) {
-        this.student_id = student_id;
+    public void setRoleId(UUID roleId) {
+        this.roleId = roleId;
     }
 
-    public void setRole_id(UUID role_id) {
-        this.role_id = role_id;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User_RoleId that = (User_RoleId) o;
+        return Objects.equals(userId, that.userId) && Objects.equals(roleId, that.roleId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, roleId);
     }
 }

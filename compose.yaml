@@ -19,7 +19,7 @@ services:
     container_name: mail_dev_ecommerce
     image: maildev/maildev
     ports:
-      - '1080:80'
+      - '1080:1080'
       - '1025:1025'
     networks:
       - backend  # ✅ Correct way to reference network

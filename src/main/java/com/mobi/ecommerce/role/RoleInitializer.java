@@ -1,6 +1,6 @@
-import com.mobi.ecommerce.role.Role;
-import com.mobi.ecommerce.role.RoleRepository;
-import com.mobi.ecommerce.role.RoleType;
+package com.mobi.ecommerce.role;
+
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;

@@ -66,9 +66,4 @@ public class Role {
         if(!userRoles.contains(userRole))
             userRoles.add(userRole);
     }
-
-    @Override
-    public String toString() {
-        return "Role{id=" + id + ", name=" + name + "}";
-    }
 }
