@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,7 +22,7 @@ import java.util.UUID;
         @UniqueConstraint(name = "user_unique_email", columnNames = "email") // Ensures email uniqueness in the database
 })
 @EntityListeners(AuditingEntityListener.class)
-public class User implements UserDetails {
+public class User implements UserDetails , Principal {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, nullable = false)
@@ -161,7 +162,7 @@ public class User implements UserDetails {
         return accountEnabled;
     }
 
-    private String fullName(){
+    public String fullName(){
         return firstName +" "+ lastName;
     }
 
@@ -235,5 +236,10 @@ public class User implements UserDetails {
 
     public void setUserRoles(List<User_Role> userRoles) {
         this.userRoles = userRoles;
+    }
+
+    @Override
+    public String getName() {
+        return email;
     }
 }

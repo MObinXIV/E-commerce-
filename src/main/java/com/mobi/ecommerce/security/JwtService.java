@@ -63,7 +63,7 @@ private Claims extractAllClaims(String token){
             .getBody(); // Returns the payload (claims)
 }
 
-    String generateToken (Map<String, Object> extraClaims, UserDetails userDetails){
+   public String generateToken (Map<String, Object> extraClaims, UserDetails userDetails){
         var authorities = userDetails.getAuthorities()
                 .stream().map(GrantedAuthority::getAuthority)
                 .toList();
@@ -82,7 +82,7 @@ private Claims extractAllClaims(String token){
         return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return extractExpirationToken(token).before(new Date());
     }
     private Date extractExpirationToken(String token) {
