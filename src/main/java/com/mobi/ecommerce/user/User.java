@@ -83,33 +83,20 @@ public class User implements UserDetails , Principal {
             fetch = FetchType.LAZY
     )
     private List <Order> orders;
-
-
     public User() {
     }
 
-//    public User(UUID id, String firstName, String lastName, String email, String password, LocalDateTime createdAt, LocalDateTime lastModifiedDate, List<User_Role> userRoles) {
-//        this.id = id;
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        this.email = email;
-//        this.password = password;
-//        this.createdAt = createdAt;
-//        this.lastModifiedDate = lastModifiedDate;
-//        this.userRoles = userRoles;
-//    }
 
-    public User(String firstName, String lastName, String email, String password, LocalDateTime createdAt, LocalDateTime lastModifiedDate, List<User_Role> userRoles) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.createdAt = createdAt;
-        this.lastModifiedDate = lastModifiedDate;
-        this.userRoles = userRoles;
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
-    public User(UUID id, String firstName, String lastName, String email, String password, LocalDateTime createdAt, LocalDateTime lastModifiedDate, boolean accountLocked, boolean accountEnabled, List<User_Role> userRoles) {
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+
+    public User(UUID id, String firstName, String lastName, String email, String password, LocalDateTime createdAt, LocalDateTime lastModifiedDate, boolean accountLocked, boolean accountEnabled, List<User_Role> userRoles, List<Order> orders) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -120,6 +107,7 @@ public class User implements UserDetails , Principal {
         this.accountLocked = accountLocked;
         this.accountEnabled = accountEnabled;
         this.userRoles = userRoles;
+        this.orders = orders;
     }
 
     public List <User_Role> getUserRoles(){
