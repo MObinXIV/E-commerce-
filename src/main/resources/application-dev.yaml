@@ -1,9 +1,10 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5431/ecommerce
+    url: jdbc:postgresql://postgres_sql-ecommerce:5432/ecommerce  # Use Docker service name
     username: username
     password: secret
     driver-class-name: org.postgresql.Driver  # Remove if using Spring Boot 3+
+
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -12,20 +13,41 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+
   mail:
-    host: localhost
+    host: mail_dev_ecommerce  # Use Docker service name
     port: 1025
-    username: Mohamed  # Remove if using MailHog (not required)
-    password: secret  # Remove if using MailHog
     properties:
       mail:
         smtp:
-          auth: true
+          auth: false  # MailDev doesn’t require authentication
           starttls:
-            enable: true
+            enable: false
           ssl:
             trust: "*"
           connectiontimeout: 5000
           timeout: 3000
           writetimeout: 5000
 
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    check-template-location: true
+
+application:
+  mailing:
+    frontend:
+      activation-url: http://localhost:4200/activate-account
+
+#  # Gmail SMTP Configuration (If needed for production)
+#  gmail:
+#    host: smtp.gmail.com
+#    port: 587
+#    username: hady@gmail.com
+#    password: secret # Use an App Password, not your actual Gmail password!
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true

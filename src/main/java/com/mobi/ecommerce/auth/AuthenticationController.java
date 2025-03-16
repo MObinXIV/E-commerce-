@@ -31,7 +31,7 @@ public class AuthenticationController {
     @PostMapping("/activate")
     public ResponseEntity<String> activateAccount(@RequestParam String token) {
         authenticationService.activateAccount(token);
-        return ResponseEntity.ok("Account activated successfully.");
+        return ResponseEntity.ok("active_account");
     }
 
 }

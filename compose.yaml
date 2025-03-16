@@ -15,14 +15,14 @@ services:
       - backend
     restart: unless-stopped
 
-  mail_dev:
+  maildev: # ✅ Change from mail_dev to maildev
     container_name: mail_dev_ecommerce
     image: maildev/maildev
     ports:
       - '1080:1080'
       - '1025:1025'
     networks:
-      - backend  # ✅ Correct way to reference network
+      - backend
 
 volumes:
   postgres:
