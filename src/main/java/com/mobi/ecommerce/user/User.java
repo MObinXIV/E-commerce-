@@ -1,6 +1,7 @@
 package com.mobi.ecommerce.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mobi.ecommerce.order.Order;
 import com.mobi.ecommerce.role.User_Role;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -26,7 +27,7 @@ public class User implements UserDetails , Principal {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, nullable = false)
-    UUID id;
+   private UUID id;
     @Column(
             name = "first_name",
             nullable = false,
@@ -75,6 +76,13 @@ public class User implements UserDetails , Principal {
     @JsonIgnore
     private List<User_Role> userRoles = new ArrayList<>();
 
+    @OneToMany(
+            mappedBy = "user",
+            orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            fetch = FetchType.LAZY
+    )
+    private List <Order> orders;
 
 
     public User() {
