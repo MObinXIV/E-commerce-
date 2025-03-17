@@ -2,7 +2,6 @@ package com.mobi.ecommerce.order_product;
 
 import com.mobi.ecommerce.order.Order;
 import com.mobi.ecommerce.product.Product;
-import com.mobi.ecommerce.role.User_RoleId;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -25,4 +24,45 @@ public class OrderProduct {
     @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime createdAt;
 
+    public OrderProduct(OrderProductId id, Product product, Order order, LocalDateTime createdAt) {
+        this.id = id;
+        this.product = product;
+        this.order = order;
+        this.createdAt = createdAt;
+    }
+
+    public OrderProduct() {
+    }
+
+    public OrderProductId getId() {
+        return id;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setId(OrderProductId id) {
+        this.id = id;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }
