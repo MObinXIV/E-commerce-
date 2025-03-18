@@ -77,9 +77,9 @@ private Claims extractAllClaims(String token){
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256) // Signs the JWT with the secret key
                 .compact(); // Compacts the JWT into a compact, URL-safe string
     }
-    boolean isTokenValid(String token, UserDetails userDetails){
-        String userName = extractUsername(userDetails.getUsername());
-        return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        String username = extractUsername(token);  // ✅ Fixed incorrect method call
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     public boolean isTokenExpired(String token) {

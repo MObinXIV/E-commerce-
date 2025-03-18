@@ -35,28 +35,50 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
         final String autHeader= request.getHeader("Authorization");
         final  String jwt;
-        final String userEmail;
+//        final String userEmail;
         if (autHeader==null || !autHeader.startsWith("Bearer ")){
             filterChain.doFilter(request,response);
             return;
         }
         // get the jwt
         jwt = autHeader.substring(7);
-        userEmail = jwtService.extractUsername(jwt);
-        if(userEmail !=null && SecurityContextHolder.getContext().getAuthentication()==null){
-            UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
-            // validate the token
-            if(jwtService.isTokenValid(jwt,userDetails))
-            {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+        System.out.println("Received JWT: " + jwt); // Debugging Log
+        try {
+            final String userEmail = jwtService.extractUsername(jwt);
+            System.out.println("Extracted Username: " + userEmail); // Debugging Log
+
+            if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
+
+                if (jwtService.isTokenValid(jwt, userDetails)) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
             }
+        } catch (Exception e) {
+            System.out.println("JWT Parsing Error: " + e.getMessage()); // Log error
         }
+
         filterChain.doFilter(request, response);
     }
+
+//        userEmail = jwtService.extractUsername(jwt);
+//        if(userEmail !=null && SecurityContextHolder.getContext().getAuthentication()==null){
+//            UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
+//            // validate the token
+//            if(jwtService.isTokenValid(jwt,userDetails))
+//            {
+//                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+//                        userDetails,
+//                        null,
+//                        userDetails.getAuthorities()
+//                );
+//                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+//                SecurityContextHolder.getContext().setAuthentication(authToken);
+//            }
+//        }
+//        filterChain.doFilter(request, response);
+
 }

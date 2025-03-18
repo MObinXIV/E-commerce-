@@ -1,7 +1,6 @@
 package com.mobi.ecommerce.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mobi.ecommerce.order.Order;
 import com.mobi.ecommerce.role.User_Role;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -68,35 +67,30 @@ public class User implements UserDetails , Principal {
 
     @Column(name = "account_enabled", nullable = false)
     private boolean accountEnabled;  // Default: Disabled until email verification
+//    @Column(name = "phone_number", nullable = false, unique = true, length = 15)
+//    private String phoneNumber;
+
+
 
     @OneToMany(
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            mappedBy = "user"
+            mappedBy = "user",
+            fetch = FetchType.EAGER
     )
     @JsonIgnore
     private List<User_Role> userRoles = new ArrayList<>();
 
-    @OneToMany(
-            mappedBy = "user",
-            orphanRemoval = true,
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            fetch = FetchType.LAZY
-    )
-    private List <Order> orders;
+//    @OneToMany(
+//            mappedBy = "user",
+//            orphanRemoval = true,
+//            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+//            fetch = FetchType.LAZY
+//    )
+//    private List <Order> orders;
     public User() {
     }
 
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-
-    public User(UUID id, String firstName, String lastName, String email, String password, LocalDateTime createdAt, LocalDateTime lastModifiedDate, boolean accountLocked, boolean accountEnabled, List<User_Role> userRoles, List<Order> orders) {
+    public User(UUID id, String firstName, String lastName, String email, String password, LocalDateTime createdAt, LocalDateTime lastModifiedDate, boolean accountLocked, boolean accountEnabled, List<User_Role> userRoles) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -106,8 +100,8 @@ public class User implements UserDetails , Principal {
         this.lastModifiedDate = lastModifiedDate;
         this.accountLocked = accountLocked;
         this.accountEnabled = accountEnabled;
+//        this.phoneNumber = phoneNumber;
         this.userRoles = userRoles;
-        this.orders = orders;
     }
 
     public List <User_Role> getUserRoles(){
