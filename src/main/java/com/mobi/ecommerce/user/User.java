@@ -1,6 +1,7 @@
 package com.mobi.ecommerce.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mobi.ecommerce.order.Order;
 import com.mobi.ecommerce.role.User_Role;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -80,17 +81,20 @@ public class User implements UserDetails , Principal {
     @JsonIgnore
     private List<User_Role> userRoles = new ArrayList<>();
 
-//    @OneToMany(
-//            mappedBy = "user",
-//            orphanRemoval = true,
-//            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-//            fetch = FetchType.LAZY
-//    )
-//    private List <Order> orders;
+    @OneToMany(
+            mappedBy = "user",
+            orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            fetch = FetchType.LAZY
+    )
+    private List <Order> orders;
+
+
+
     public User() {
     }
 
-    public User(UUID id, String firstName, String lastName, String email, String password, LocalDateTime createdAt, LocalDateTime lastModifiedDate, boolean accountLocked, boolean accountEnabled, List<User_Role> userRoles) {
+    public User(UUID id, String firstName, String lastName, String email, String password, LocalDateTime createdAt, LocalDateTime lastModifiedDate, boolean accountLocked, boolean accountEnabled, List<User_Role> userRoles, List<Order> orders) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -102,6 +106,7 @@ public class User implements UserDetails , Principal {
         this.accountEnabled = accountEnabled;
 //        this.phoneNumber = phoneNumber;
         this.userRoles = userRoles;
+        this.orders = orders;
     }
 
     public List <User_Role> getUserRoles(){
@@ -231,5 +236,13 @@ public class User implements UserDetails , Principal {
     @Override
     public String getName() {
         return email;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 }

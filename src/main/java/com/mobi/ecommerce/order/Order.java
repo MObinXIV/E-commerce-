@@ -40,11 +40,17 @@ public class Order {
     @LastModifiedDate
     @Column(name = "updatedAt", insertable = false)
     private LocalDateTime lastModifiedDate;
+    @Column(name = "shipping_fee", nullable = false)
+    private Integer shippingFee;
 
+    @Column(name="phone_number" , nullable = false)
+    private String phoneNumber;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id",
             foreignKey = @ForeignKey(name = "user_orders_fk"))
     private User user;
+
+
 }
