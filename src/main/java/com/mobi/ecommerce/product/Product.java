@@ -1,7 +1,6 @@
 package com.mobi.ecommerce.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mobi.ecommerce.order_product.OrderProduct;
 import com.mobi.ecommerce.role.User_Role;
 import com.mobi.ecommerce.user.User;
 import jakarta.persistence.*;
@@ -28,9 +27,6 @@ public class Product {
             columnDefinition = "TEXT"
     )
     private  String productName;
-
-
-
 
     @Column(
             name = "product_description",
@@ -62,12 +58,6 @@ public class Product {
     @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id",
             foreignKey = @ForeignKey(name = "user_product_fk"))
     private User user;
-    @OneToMany (
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            mappedBy = "product"
-    )
-    @JsonIgnore
-    private List<OrderProduct> orderProducts = new ArrayList<>();
 
     public Product(UUID id, String productName, String productDescription, BigDecimal product_price, Integer stock, LocalDateTime createdAt, LocalDateTime updatedAt, User user) {
         this.id = id;
@@ -91,20 +81,7 @@ public class Product {
         this.user = user;
     }
 
-
-
-
     public Product() {
-    }
-
-    public void addProductToOrder (OrderProduct orderProduct){
-        if(!orderProducts.contains(orderProduct))
-            orderProducts.add(orderProduct);
-
-    }
-
-    public void removeRole(User_Role userRole){
-        orderProducts.remove(userRole);
     }
 
     public UUID getId() {

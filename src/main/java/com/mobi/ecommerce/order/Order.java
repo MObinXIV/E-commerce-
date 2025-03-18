@@ -48,8 +48,8 @@ public class Order {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "user_orders_fk"))
+    @JoinColumn(name = "user_idO", nullable = false, referencedColumnName = "id",
+            foreignKey = @ForeignKey(name = "user_order_fk"))
     private User user;
 
 

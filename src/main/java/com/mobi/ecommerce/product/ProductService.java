@@ -53,6 +53,7 @@ public class ProductService {
         product.setUser(user);
         product.setCreatedAt(LocalDateTime.now());
         product.setUpdatedAt(LocalDateTime.now());
+        user.addProduct(product);
 
         return productRepository.save(product);
     }
