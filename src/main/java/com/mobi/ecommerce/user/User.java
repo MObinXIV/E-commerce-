@@ -14,10 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity(name="User")
 @Table(name="app_user",uniqueConstraints = {
@@ -91,6 +88,7 @@ public class User implements UserDetails , Principal {
     private List <Product> products;
 
 
+
     @OneToMany(
             mappedBy = "user",
             orphanRemoval = true,
@@ -100,12 +98,10 @@ public class User implements UserDetails , Principal {
     private List <Order> orders;
 
 
-
-
     public User() {
     }
 
-    public User(UUID id, String firstName, String lastName, String email, String password, LocalDateTime createdAt, LocalDateTime lastModifiedDate, boolean accountLocked, boolean accountEnabled, List<User_Role> userRoles, List<Order> orders) {
+    public User(UUID id, String firstName, String lastName, String email, String password, LocalDateTime createdAt, LocalDateTime lastModifiedDate, boolean accountLocked, boolean accountEnabled, List<User_Role> userRoles, List<Product> products, List<Order> orders) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -117,6 +113,7 @@ public class User implements UserDetails , Principal {
         this.accountEnabled = accountEnabled;
 //        this.phoneNumber = phoneNumber;
         this.userRoles = userRoles;
+        this.products = products;
         this.orders = orders;
     }
 
@@ -128,6 +125,33 @@ public class User implements UserDetails , Principal {
             userRoles.add(userRole);
     }
 
+    public void addProduct(Product product) {
+        if (product == null) {
+            throw new IllegalArgumentException("Product cannot be null");
+        }
+
+        // Check if the product already exists in the user's list
+        for (Product existingProduct : products) {
+            if (existingProduct.getProductName().equalsIgnoreCase(product.getProductName())) {
+                // Increase stock and return (avoid duplicate addition)
+                existingProduct.setStock(existingProduct.getStock() + product.getStock());
+                return;
+            }
+        }
+
+        // If the product does not exist, add it
+        products.add(product);
+        product.setUser(this);
+    }
+
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
     public void removeRole(User_Role userRole){
         userRoles.remove(userRole);
     }

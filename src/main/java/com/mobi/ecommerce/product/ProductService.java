@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -35,9 +36,14 @@ public class ProductService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
     }
-
     public Product createProduct(ProductRequest productRequest) {
         User user = getAuthenticatedUser(); // Assuming this fetches the current authenticated user
+        Optional<Product> existingProduct = productRepository.findByUserAndProductName(user, productRequest.getProductName());
+
+        if (existingProduct.isPresent()) {
+
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Product already exists, update stock instead.");
+        }
 
         Product product = new Product();
         product.setProductName(productRequest.getProductName());  // FIXED
