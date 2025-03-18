@@ -4,6 +4,7 @@ import com.mobi.ecommerce.order.Order;
 import com.mobi.ecommerce.product.Product;
 import jakarta.persistence.*;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Entity(name = "OrderProduct")
@@ -24,11 +25,23 @@ public class OrderProduct {
     @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime createdAt;
 
-    public OrderProduct(OrderProductId id, Product product, Order order, LocalDateTime createdAt) {
+    @Column(name = "price" , nullable = false)
+    private BigInteger price;
+
+    public BigInteger getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigInteger price) {
+        this.price = price;
+    }
+
+    public OrderProduct(OrderProductId id, Product product, Order order, LocalDateTime createdAt, BigInteger price) {
         this.id = id;
         this.product = product;
         this.order = order;
         this.createdAt = createdAt;
+        this.price = price;
     }
 
     public OrderProduct() {
