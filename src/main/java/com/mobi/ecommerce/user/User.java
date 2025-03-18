@@ -2,6 +2,7 @@ package com.mobi.ecommerce.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mobi.ecommerce.order.Order;
+import com.mobi.ecommerce.product.Product;
 import com.mobi.ecommerce.role.User_Role;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -87,7 +88,17 @@ public class User implements UserDetails , Principal {
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
             fetch = FetchType.LAZY
     )
+    private List <Product> products;
+
+
+    @OneToMany(
+            mappedBy = "user",
+            orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            fetch = FetchType.LAZY
+    )
     private List <Order> orders;
+
 
 
 

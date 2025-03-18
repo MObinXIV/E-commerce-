@@ -58,6 +58,12 @@ public class Product {
     @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id",
             foreignKey = @ForeignKey(name = "user_product_fk"))
     private User user;
+//    @OneToMany (
+//            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+//            mappedBy = "product"
+//    )
+//    @JsonIgnore
+//    private List<OrderProduct> orderProducts = new ArrayList<>();
 
     public Product(UUID id, String productName, String productDescription, BigDecimal product_price, Integer stock, LocalDateTime createdAt, LocalDateTime updatedAt, User user) {
         this.id = id;
@@ -81,12 +87,6 @@ public class Product {
         this.user = user;
     }
 
-//    @OneToMany (
-//            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-//            mappedBy = "product"
-//    )
-//    @JsonIgnore
-//    private List<OrderProduct> orderProducts = new ArrayList<>();
 
 
 
