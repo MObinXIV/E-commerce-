@@ -44,7 +44,7 @@ public class AuthenticationService {
     }
     @Transactional
     public AuthenticationResponse register(RegistrationRequest request) {
-        var roleOptional = roleRepository.findByName(RoleType.CUSTOMER);
+        var roleOptional = roleRepository.findByName(RoleType.USER);
 
         if (roleOptional.isEmpty()) {
             throw new RuntimeException("Default role CUSTOMER not found!");

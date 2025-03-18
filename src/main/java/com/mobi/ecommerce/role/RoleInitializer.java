@@ -12,11 +12,10 @@ public class RoleInitializer {
     @Bean
     CommandLineRunner initRoles(RoleRepository roleRepository) {
         return args -> {
-            if (roleRepository.findByName(RoleType.CUSTOMER).isEmpty()) {
+            if (roleRepository.findByName(RoleType.USER).isEmpty()) {
                 roleRepository.saveAll(List.of(
-                        new Role(RoleType.CUSTOMER),
-                        new Role(RoleType.ADMIN),
-                        new Role(RoleType.SELLER)
+                        new Role(RoleType.USER),
+                        new Role(RoleType.ADMIN)
                 ));
                 System.out.println("✅ Default roles inserted!");
             }
