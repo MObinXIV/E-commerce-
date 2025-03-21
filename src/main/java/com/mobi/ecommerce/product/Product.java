@@ -1,7 +1,7 @@
 package com.mobi.ecommerce.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mobi.ecommerce.role.User_Role;
+import com.mobi.ecommerce.order_product.OrderProduct;
 import com.mobi.ecommerce.user.User;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -59,7 +59,12 @@ public class Product {
             foreignKey = @ForeignKey(name = "user_product_fk"))
     private User user;
 
-    public Product(UUID id, String productName, String productDescription, BigDecimal product_price, Integer stock, LocalDateTime createdAt, LocalDateTime updatedAt, User user) {
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
+    private List<OrderProduct> orderProducts = new ArrayList<>();
+
+
+
+    public Product(UUID id, String productName, String productDescription, BigDecimal product_price, Integer stock, LocalDateTime createdAt, LocalDateTime updatedAt, User user, List<OrderProduct> orderProducts) {
         this.id = id;
         this.productName = productName;
         this.productDescription = productDescription;
@@ -68,7 +73,9 @@ public class Product {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.user = user;
+        this.orderProducts = orderProducts;
     }
+
     public String getProductName() {
         return productName;
     }
@@ -139,5 +146,24 @@ public class Product {
 
     public User getUser() {
         return user;
+    }
+
+    public List<OrderProduct> getOrderProducts() {
+        return orderProducts;
+    }
+
+    public void setOrderProducts(List<OrderProduct> orderProducts) {
+        this.orderProducts = orderProducts;
+    }
+
+    void addOrderProduct(OrderProduct orderProduct){
+        if(orderProduct != null &&!orderProducts.contains(orderProduct)){
+            orderProducts.add(orderProduct);
+            orderProduct.setProduct(this);
+        }
+    }
+    void removeOrderProduct(OrderProduct orderProduct){
+        orderProducts.remove(orderProduct);
+        orderProduct.setProduct(null);
     }
 }

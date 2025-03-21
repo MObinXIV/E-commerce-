@@ -1,5 +1,6 @@
 package com.mobi.ecommerce.product;
 
+import com.mobi.ecommerce.security.SecurityUtils;
 import com.mobi.ecommerce.user.User;
 import com.mobi.ecommerce.user.UserRepository;
 import jakarta.transaction.Transactional;
@@ -20,24 +21,25 @@ import static ch.qos.logback.core.util.AggregationType.NOT_FOUND;
 @Service
 public class ProductService {
     private  final  ProductRepository productRepository;
-    private  final UserRepository userRepository;
-
-    public ProductService(ProductRepository productRepository, UserRepository userRepository) {
+//    private  final UserRepository userRepository;
+    private final SecurityUtils securityUtils;
+    public ProductService(ProductRepository productRepository,  SecurityUtils securityUtils) {
         this.productRepository = productRepository;
-        this.userRepository = userRepository;
+//        this.userRepository = userRepository;
+        this.securityUtils = securityUtils;
     }
 
     // Get the currently authenticated user from the SecurityContext
-    private User getAuthenticatedUser() {
-        // Retrieves the currently authenticated user's email from the security context
-        String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-
-// Finds the user by email in the user repository, or throws an unauthorized exception if not found
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
-    }
+//    private User getAuthenticatedUser() {
+//        // Retrieves the currently authenticated user's email from the security context
+//        String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+//
+//// Finds the user by email in the user repository, or throws an unauthorized exception if not found
+//        return userRepository.findByEmail(email)
+//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
+//    }
     public Product createProduct(ProductRequest productRequest) {
-        User user = getAuthenticatedUser(); // Assuming this fetches the current authenticated user
+        User user = securityUtils.getAuthenticatedUser(); // Assuming this fetches the current authenticated user
         Optional<Product> existingProduct = productRepository.findByUserAndProductName(user, productRequest.getProductName());
 
         if (existingProduct.isPresent()) {
@@ -72,7 +74,7 @@ public class ProductService {
 
     @Transactional
     public Product updateProduct(UUID productId,ProductRequest productRequest){
-        User user = getAuthenticatedUser();
+        User user = securityUtils.getAuthenticatedUser();
 
         Product product = productRepository.findById(productId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
         // Ensure the authenticated user is the owner of the product
@@ -93,14 +95,14 @@ public class ProductService {
     }
 
     public Product getProductById(UUID productId) {
-        User user = getAuthenticatedUser();
+        User user = securityUtils.getAuthenticatedUser();
         return productRepository.findByIdAndUserId(productId, user.getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
     }
 
 
     public void deleteProduct(UUID productId){
-        User user = getAuthenticatedUser();
+        User user = securityUtils.getAuthenticatedUser();
         Product existingProduct = productRepository.findByIdAndUserId(productId,user.getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
         productRepository.delete(existingProduct);

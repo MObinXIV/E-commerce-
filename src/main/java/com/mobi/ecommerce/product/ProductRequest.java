@@ -1,16 +1,25 @@
 package com.mobi.ecommerce.product;
 
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.NonNull;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
 public class ProductRequest {
-    @NonNull
+    @NotEmpty(message ="productName shouldn't be empty")
     private String productName;
-    @NonNull
+    @NotEmpty(message ="product price shouldn't be empty")
     private String productDescription;
+    @NotNull(message = "Product price cannot be null")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Product price must be greater than 0")
+
     private BigDecimal productPrice;
+    @NotNull(message = "Stock cannot be null")
+    @PositiveOrZero(message = "Stock must be zero or a positive number")
     private Integer stock;
 //    private UUID userId;
 
