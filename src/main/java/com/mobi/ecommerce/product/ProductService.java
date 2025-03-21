@@ -2,42 +2,26 @@ package com.mobi.ecommerce.product;
 
 import com.mobi.ecommerce.security.SecurityUtils;
 import com.mobi.ecommerce.user.User;
-import com.mobi.ecommerce.user.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static ch.qos.logback.core.util.AggregationType.NOT_FOUND;
 
 @Service
 public class ProductService {
     private  final  ProductRepository productRepository;
-//    private  final UserRepository userRepository;
     private final SecurityUtils securityUtils;
     public ProductService(ProductRepository productRepository,  SecurityUtils securityUtils) {
         this.productRepository = productRepository;
-//        this.userRepository = userRepository;
         this.securityUtils = securityUtils;
     }
 
-    // Get the currently authenticated user from the SecurityContext
-//    private User getAuthenticatedUser() {
-//        // Retrieves the currently authenticated user's email from the security context
-//        String email = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-//
-//// Finds the user by email in the user repository, or throws an unauthorized exception if not found
-//        return userRepository.findByEmail(email)
-//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
-//    }
     public Product createProduct(ProductRequest productRequest) {
         User user = securityUtils.getAuthenticatedUser(); // Assuming this fetches the current authenticated user
         Optional<Product> existingProduct = productRepository.findByUserAndProductName(user, productRequest.getProductName());
