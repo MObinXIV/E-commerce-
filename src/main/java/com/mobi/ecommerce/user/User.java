@@ -14,7 +14,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
 @Entity(name="User")
 @Table(name="app_user",uniqueConstraints = {
@@ -125,35 +128,28 @@ public class User implements UserDetails , Principal {
             userRoles.add(userRole);
     }
 
-    public void addProduct(Product product) {
+    public  void  addProduct(Product product){
         if (product == null) {
             throw new IllegalArgumentException("Product cannot be null");
         }
 
-        // Check if the product already exists in the user's list
-        for (Product existingProduct : products) {
-            if (existingProduct.getProductName().equalsIgnoreCase(product.getProductName())) {
-                // Increase stock and return (avoid duplicate addition)
-                existingProduct.setStock(existingProduct.getStock() + product.getStock());
-                return;
-            }
-        }
-
-        // If the product does not exist, add it
-        products.add(product);
+        else
+            products.add(product);
         product.setUser(this);
     }
 
+    public  void  addOrder(Order order){
+        if (order == null) {
+            throw new IllegalArgumentException("Product cannot be null");
+        }
 
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
+        else
+            orders.add(order);
+        order.setUser(this);
     }
     public void removeRole(User_Role userRole){
         userRoles.remove(userRole);
+        userRole.setUser(this);
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
