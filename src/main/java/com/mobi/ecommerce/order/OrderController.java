@@ -24,4 +24,14 @@ public class OrderController {
         OrderResponse updatedOrder = orderService.addProductToOrder(orderId, productId, quantity);
         return ResponseEntity.ok(updatedOrder);
     }
+
+    @DeleteMapping("/{orderId}/product/{productId}")
+//    @PreAuthorize("hasAuthority('CUSTOMER')") // Adjust as needed
+    public ResponseEntity<OrderResponse> removeProductFromOrder(
+            @PathVariable UUID orderId,
+            @PathVariable UUID productId
+    ) {
+        Order updatedOrder = orderService.removeProductFromOrder(orderId, productId);
+        return ResponseEntity.ok(OrderResponse.fromEntity(updatedOrder));
+    }
 }
