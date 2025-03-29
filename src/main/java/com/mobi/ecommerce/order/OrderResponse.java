@@ -1,13 +1,12 @@
 package com.mobi.ecommerce.order;
 
-import com.mobi.ecommerce.order_product.OrderProduct;
 import com.mobi.ecommerce.order_product.OrderProductResponse;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class OrderResponse {
     private UUID id;
@@ -15,39 +14,83 @@ public class OrderResponse {
     private PaymentMethod paymentMethod;
     private BigDecimal totalPrice;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private int shippingFee;
+    private LocalDateTime lastModifiedDate;
+    private Integer shippingFee;
     private String phoneNumber;
+    private UUID userId; // Added
     private List<OrderProductResponse> orderProducts;
+    private boolean locked; // Added
+    private String shippingAddress;
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public void setShippingFee(Integer shippingFee) {
+        this.shippingFee = shippingFee;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
+
+    public void setOrderProducts(List<OrderProductResponse> orderProducts) {
+        this.orderProducts = orderProducts;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
 
     public OrderResponse(UUID id, OrderStatus orderStatus, PaymentMethod paymentMethod,
-                         BigDecimal totalPrice, LocalDateTime createdAt, LocalDateTime updatedAt,
-                         int shippingFee, String phoneNumber, List<OrderProductResponse> orderProducts) {
+                         BigDecimal totalPrice, LocalDateTime createdAt, LocalDateTime lastModifiedDate,
+                         int shippingFee, String phoneNumber, UUID userId,
+                         List<OrderProductResponse> orderProducts, boolean locked, String shippingAddress) {
         this.id = id;
         this.orderStatus = orderStatus;
         this.paymentMethod = paymentMethod;
         this.totalPrice = totalPrice;
         this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.lastModifiedDate = lastModifiedDate;
         this.shippingFee = shippingFee;
         this.phoneNumber = phoneNumber;
-        this.orderProducts = orderProducts;
+        this.userId = userId;
+        this.orderProducts = orderProducts != null ? orderProducts : new ArrayList<>(); // Null safety
+        this.locked = locked;
+        this.shippingAddress = shippingAddress;
     }
 
-    public static OrderResponse fromEntity(Order order) {
-        return new OrderResponse(
-                order.getId(),
-                order.getOrderStatus(),
-                order.getPaymentMethod(),
-                order.getTotalPrice(),
-                order.getCreatedAt(),
-                order.getLastModifiedDate(),
-                order.getShippingFee(),
-                order.getPhoneNumber(),
-                order.getOrderProducts().stream()
-                        .map(OrderProductResponse::fromEntity)
-                        .collect(Collectors.toList()) // Convert orderProducts to DTOs
-        );
+    // Default constructor for safety
+    public OrderResponse() {
+        this.orderProducts = new ArrayList<>();
     }
 
     public UUID getId() { return id; }
@@ -55,8 +98,18 @@ public class OrderResponse {
     public PaymentMethod getPaymentMethod() { return paymentMethod; }
     public BigDecimal getTotalPrice() { return totalPrice; }
     public LocalDateTime getCreatedAt() { return createdAt; }
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-    public int getShippingFee() { return shippingFee; }
+    public LocalDateTime getUpdatedAt() { return lastModifiedDate; }
+    public Integer getShippingFee() { return shippingFee; }
     public String getPhoneNumber() { return phoneNumber; }
+    public UUID getUserId() { return userId; }
     public List<OrderProductResponse> getOrderProducts() { return orderProducts; }
+    public boolean isLocked() { return locked; }
+
+    public String getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
 }

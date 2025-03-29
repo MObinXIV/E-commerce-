@@ -1,60 +1,39 @@
 package com.mobi.ecommerce.order;
 
+import com.mobi.ecommerce.order_product.OrderProductRequest;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import java.util.List;
 import java.util.UUID;
 
 public class OrderRequest {
 
-    private UUID productId;
-    private int quantity;
-    private PaymentMethod paymentMethod;
-    private Integer shippingFee;
+    @NotNull(message = "Products list cannot be empty")
+    @Size(min = 1, message = "At least one product must be ordered")
+    private List<OrderProductRequest> products; // List of ordered products
+
     private String phoneNumber;
+    private String shippingAddress;
+    public OrderRequest() {}
 
-    public UUID getProductId() {
-        return productId;
-    }
-
-    public void setProductId(UUID productId) {
-        this.productId = productId;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public PaymentMethod getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(PaymentMethod paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public Integer getShippingFee() {
-        return shippingFee;
-    }
-
-    public void setShippingFee(Integer shippingFee) {
-        this.shippingFee = shippingFee;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
+    public OrderRequest(List<OrderProductRequest> products,
+                        Integer shippingFee, String phoneNumber, String shippingAddress) {
+        this.products = products;
         this.phoneNumber = phoneNumber;
+        this.shippingAddress = shippingAddress;
+    }
+    public List<OrderProductRequest> getProducts() { return products; }
+    public void setProducts(List<OrderProductRequest> products) { this.products = products; }
+
+
+    public String getPhoneNumber() { return phoneNumber; }
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+
+    public String getShippingAddress() {
+        return shippingAddress;
     }
 
-    public OrderRequest(UUID productId, int quantity, PaymentMethod paymentMethod, Integer shippingFee, String phoneNumber) {
-        this.productId = productId;
-        this.quantity = quantity;
-        this.paymentMethod = paymentMethod;
-        this.shippingFee = shippingFee;
-        this.phoneNumber = phoneNumber;
+    public void setShippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
     }
 }

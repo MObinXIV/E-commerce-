@@ -4,10 +4,8 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.NonNull;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 public class ProductRequest {
     @NotEmpty(message ="productName shouldn't be empty")

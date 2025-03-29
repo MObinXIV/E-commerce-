@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Entity(name = "OrderProduct")
@@ -27,18 +26,19 @@ public class OrderProduct {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime createdAt;
-
+    @Column(name = "updatedAt", insertable = false)
+    private LocalDateTime lastModifiedDate;
     @Column(name = "total_price" , nullable = false)
     private BigDecimal price;
 
     @Column(name = "quantity")
-    int quantity;
+   private Integer quantity;
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
@@ -50,12 +50,14 @@ public class OrderProduct {
         this.price = price;
     }
 
-    public OrderProduct(OrderProductId id, Product product, Order order, LocalDateTime createdAt, BigDecimal price) {
+    public OrderProduct(OrderProductId id, Product product, Order order, LocalDateTime createdAt, LocalDateTime lastModifiedDate, BigDecimal price , Integer quantity) {
         this.id = id;
         this.product = product;
         this.order = order;
         this.createdAt = createdAt;
+        this.lastModifiedDate = lastModifiedDate;
         this.price = price;  // ✅ Assign actual price
+        this.quantity=quantity;
     }
 
 
@@ -92,5 +94,13 @@ public class OrderProduct {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 }

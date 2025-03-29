@@ -1,6 +1,5 @@
 package com.mobi.ecommerce.auth;
 
-import lombok.Getter;
 
 
 public class AuthenticationResponse {

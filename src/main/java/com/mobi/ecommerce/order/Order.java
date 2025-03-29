@@ -39,11 +39,21 @@ public class Order {
     @LastModifiedDate
     @Column(name = "updatedAt", insertable = false)
     private LocalDateTime lastModifiedDate;
-    @Column(name = "shipping_fee", nullable = false)
-    private Integer shippingFee;
+    @Column(name = "shipping_fee", insertable = false)
+    private Float shippingFee;
 
     @Column(name="phone_number" , nullable = false)
     private String phoneNumber;
+    private String shippingAddress;
+    private boolean isLocked;
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
+    }
 
     @JsonIgnore
     @ManyToOne
@@ -62,7 +72,7 @@ public class Order {
         this.orderProducts = orderProducts;
     }
 
-    public Order(UUID id, OrderStatus orderStatus, PaymentMethod paymentMethod, BigDecimal totalPrice, LocalDateTime createdAt, LocalDateTime lastModifiedDate, Integer shippingFee, String phoneNumber, User user) {
+    public Order(UUID id, OrderStatus orderStatus, PaymentMethod paymentMethod, BigDecimal totalPrice, LocalDateTime createdAt, LocalDateTime lastModifiedDate, Float shippingFee, String phoneNumber, String shippingAddress, boolean isLocked, User user) {
         this.id = id;
         this.orderStatus = orderStatus;
         this.paymentMethod = paymentMethod;
@@ -71,6 +81,8 @@ public class Order {
         this.lastModifiedDate = lastModifiedDate;
         this.shippingFee = shippingFee;
         this.phoneNumber = phoneNumber;
+        this.shippingAddress = shippingAddress;
+        this.isLocked = isLocked;
         this.user = user;
     }
 
@@ -126,11 +138,11 @@ public class Order {
         this.lastModifiedDate = lastModifiedDate;
     }
 
-    public Integer getShippingFee() {
+    public Float getShippingFee() {
         return shippingFee;
     }
 
-    public void setShippingFee(Integer shippingFee) {
+    public void setShippingFee(Float shippingFee) {
         this.shippingFee = shippingFee;
     }
 
@@ -157,13 +169,21 @@ public class Order {
 
         }
     }
-    public boolean isLocked() {
-        return createdAt.plusDays(2).isBefore(LocalDateTime.now());
-    }
+//    public boolean isLocked() {
+//        return createdAt.plusDays(2).isBefore(LocalDateTime.now());
+//    }
     void removeOrderProduct(OrderProduct orderProduct){
         orderProducts.remove(orderProduct);
         totalPrice = totalPrice.subtract(orderProduct.getPrice());
 
         orderProduct.setOrder(null);
+    }
+
+    public String getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
     }
 }

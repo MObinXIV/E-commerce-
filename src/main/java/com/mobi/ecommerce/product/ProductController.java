@@ -26,7 +26,7 @@ public class ProductController {
     }
 
     @PatchMapping("/{productId}")
-    public ResponseEntity<Product> updateUser(
+    public ResponseEntity<Product> updateOrder(
             @PathVariable UUID productId,
             @RequestBody ProductRequest productRequest
             ){
