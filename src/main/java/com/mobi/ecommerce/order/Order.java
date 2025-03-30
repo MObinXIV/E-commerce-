@@ -46,15 +46,6 @@ public class Order {
     private String phoneNumber;
     private String shippingAddress;
     private boolean isLocked;
-
-    public boolean isLocked() {
-        return isLocked;
-    }
-
-    public void setLocked(boolean locked) {
-        isLocked = locked;
-    }
-
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id",
@@ -97,7 +88,13 @@ public class Order {
         this.id = id;
     }
 
+    public boolean isLocked() {
+        return isLocked;
+    }
 
+    public void setLocked(boolean locked) {
+        isLocked = locked;
+    }
     public OrderStatus getOrderStatus() {
         return orderStatus;
     }

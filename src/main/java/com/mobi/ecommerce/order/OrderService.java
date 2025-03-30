@@ -62,6 +62,7 @@ public class OrderService {
 
         // Process each product
         for (var productRequest : request.getProducts()) {
+            // get the product using bridge table
             Product product = productRepository.findById(productRequest.getProductId())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
 
@@ -69,14 +70,14 @@ public class OrderService {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insufficient stock for: " + product.getProductName());
             }
 
-            // Deduct stock and save product
+            // update stock and save product
             product.setStock(product.getStock() - productRequest.getQuantity());
             productRepository.save(product);
 
             // Calculate total price
             totalPrice = totalPrice.add(product.getProduct_price().multiply(BigDecimal.valueOf(productRequest.getQuantity())));
 
-            // Save order-product relation
+            // Save order-product new relation
             OrderProduct orderProduct = new OrderProduct(
                     new OrderProductId(order.getId(), product.getId()),
                     product,
