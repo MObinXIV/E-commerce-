@@ -56,7 +56,6 @@ public class OrderService {
         order.setPhoneNumber(request.getPhoneNumber());
         order.setShippingAddress(request.getShippingAddress());
         order.setLocked(false);
-
         // Save the order first to generate an ID
         order = orderRepository.save(order);
 
@@ -100,7 +99,7 @@ public class OrderService {
         order.setTotalPrice(totalPrice.add(BigDecimal.valueOf(shippingFee)));
 
         order.setShippingFee(shippingFee);
-
+        user.addOrder(order);
         return orderMapper.toOrderResponse(order);
     }
     private void applyLock(Order order){
@@ -232,5 +231,13 @@ public class OrderService {
         orderProductRepository.deleteAll(order.getOrderProducts());
         orderRepository.delete(order); // Remove order
 
+    }
+    public List<OrderResponse> getOrdersForProduct(UUID productId){
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
+        // Get all orders containing this product
+        List<OrderProduct> orderProducts = orderProductRepository.findByProduct(product);
+        return orderProducts.stream()
+                .map(orderProduct -> orderMapper.toOrderResponse(orderProduct.getOrder()))
+                .toList();
     }
 }

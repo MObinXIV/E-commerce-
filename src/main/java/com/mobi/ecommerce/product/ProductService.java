@@ -1,5 +1,10 @@
 package com.mobi.ecommerce.product;
 
+import com.mobi.ecommerce.order.OrderMapper;
+import com.mobi.ecommerce.order.OrderResponse;
+import com.mobi.ecommerce.order_product.OrderProduct;
+import com.mobi.ecommerce.order_product.OrderProductRepository;
+import com.mobi.ecommerce.order_product.OrderProductResponse;
 import com.mobi.ecommerce.security.SecurityUtils;
 import com.mobi.ecommerce.user.User;
 import jakarta.transaction.Transactional;
@@ -17,12 +22,18 @@ import java.util.stream.Collectors;
 public class ProductService {
     private  final  ProductRepository productRepository;
     private final SecurityUtils securityUtils;
-    public ProductService(ProductRepository productRepository,  SecurityUtils securityUtils) {
+    private  final ProductMapper productMapper;
+    private final OrderProductRepository orderProductRepository;
+    private final OrderMapper orderMapper;
+    public ProductService(ProductRepository productRepository, SecurityUtils securityUtils, ProductMapper productMapper, OrderProductRepository orderProductRepository, OrderMapper orderMapper) {
         this.productRepository = productRepository;
         this.securityUtils = securityUtils;
+        this.productMapper = productMapper;
+        this.orderProductRepository = orderProductRepository;
+        this.orderMapper = orderMapper;
     }
 
-    public Product createProduct(ProductRequest productRequest) {
+    public ProductResponse createProduct(ProductRequest productRequest) {
         User user = securityUtils.getAuthenticatedUser(); // Assuming this fetches the current authenticated user
         Optional<Product> existingProduct = productRepository.findByUserAndProductName(user, productRequest.getProductName());
 
@@ -40,24 +51,18 @@ public class ProductService {
         product.setCreatedAt(LocalDateTime.now());
         product.setUpdatedAt(LocalDateTime.now());
         user.addProduct(product);
-
-        return productRepository.save(product);
+        product =productRepository.save(product);
+        return productMapper.toProductResponse(product);
     }
 
     public List<ProductResponse> getAllProducts(){
+
         List<Product> products= productRepository.findAll();
-        return products.stream().map(product -> new ProductResponse(
-                product.getId(),
-                product.getProductName(),
-                product.getProductDescription(),
-                product.getProduct_price(),
-                product.getStock(),
-                product.getCreatedAt()
-        )).collect(Collectors.toList());
+        return products.stream().map(productMapper::toProductResponse).toList();
     }
 
     @Transactional
-    public Product updateProduct(UUID productId,ProductRequest productRequest){
+    public ProductResponse updateProduct(UUID productId,ProductRequest productRequest){
         User user = securityUtils.getAuthenticatedUser();
 
         Product product = productRepository.findById(productId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
@@ -74,14 +79,15 @@ public class ProductService {
             product.setStock(productRequest.getStock());
         product.setUpdatedAt(LocalDateTime.now()); // Update timestamp
 
-        return product;
+        return productMapper.toProductResponse(product);
 
     }
 
-    public Product getProductById(UUID productId) {
+    public ProductResponse getProductById(UUID productId) {
         User user = securityUtils.getAuthenticatedUser();
-        return productRepository.findByIdAndUserId(productId, user.getId())
+        Product product= productRepository.findByIdAndUserId(productId, user.getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
+    return productMapper.toProductResponse(product);
     }
 
 
@@ -91,5 +97,4 @@ public class ProductService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
         productRepository.delete(existingProduct);
     }
-
 }
