@@ -34,20 +34,6 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
-//    public String generateToken(String subject, Map<String,Object> claims){
-//        String token= Jwts.builder()
-//                .setClaims(claims)
-//                .setSubject(subject)
-//                .setIssuedAt(Date.from(Instant.now()))
-//                .setExpiration(
-//                        Date.from(
-//                                Instant.now().plus(15,DAYS)
-//                        )
-//                )
-//                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-//                .compact();
-//        return  token;
-//    }
 public <T> T extractClaim (String token, Function<Claims,T> claimResolver){
     // Extracts a specific claim from the JWT token
     final  Claims claims = extractAllClaims(token);

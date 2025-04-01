@@ -26,6 +26,7 @@ public class SecurityConfig {
 
     private static final String[] WHITE_LIST_URL = {
             "/api/v1/auth/**",
+            "/api/v1/admin/**",
             "/v2/api-docs",
             "/v3/api-docs",
             "/v3/api-docs/**",
@@ -44,9 +45,9 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(WHITE_LIST_URL).permitAll() // Allow public access to whitelisted URLs
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        // User routes can be accessed by users with 'USER' or 'ADMIN' role
-                        .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+//                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
+//                        // User routes can be accessed by users with 'USER' or 'ADMIN' role
+//                        .requestMatchers("/user/**").hasAnyAuthority("USER", "ADMIN")
                         .anyRequest().authenticated() // Require authentication for all other requests
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
