@@ -28,10 +28,10 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.login(request));
     }
 
-    @PostMapping("/activate")
-    public ResponseEntity<String> activateAccount(@RequestParam String token) {
-        authenticationService.activateAccount(token);
-        return ResponseEntity.ok("active_account");
-    }
+//    @PostMapping("/activate")
+//    public ResponseEntity<String> activateAccount(@RequestParam String token) {
+//        authenticationService.activateAccount(token);
+//        return ResponseEntity.ok("active_account");
+//    }
 
 }
