@@ -44,6 +44,9 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(WHITE_LIST_URL).permitAll() // Allow public access to whitelisted URLs
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        // User routes can be accessed by users with 'USER' or 'ADMIN' role
+                        .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated() // Require authentication for all other requests
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
