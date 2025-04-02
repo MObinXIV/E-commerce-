@@ -28,7 +28,7 @@ public class ProductController {
     @PatchMapping("/{productId}")
     public ResponseEntity<ProductResponse> updateOrder(
             @PathVariable UUID productId,
-            @RequestBody ProductRequest productRequest
+            @Valid @RequestBody ProductRequest productRequest
             ){
         return ResponseEntity.ok(productService.updateProduct(productId,productRequest));
     }
@@ -43,8 +43,5 @@ public class ProductController {
          productService.deleteProduct(productId);
         return ResponseEntity.noContent().build();
     }
-
-    // Get Orders for specific product
-
 
 }

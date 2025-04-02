@@ -3,6 +3,7 @@ package com.mobi.ecommerce.user;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mobi.ecommerce.order.Order;
 import com.mobi.ecommerce.product.Product;
+import com.mobi.ecommerce.role.RoleType;
 import com.mobi.ecommerce.role.User_Role;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -34,7 +35,7 @@ public class User implements UserDetails , Principal {
             nullable = false,
             columnDefinition = "TEXT"
     )
-    String firstName ;
+   private String firstName ;
     @Column(
             name = "last_name",
             nullable = false,
@@ -69,11 +70,8 @@ public class User implements UserDetails , Principal {
 
     @Column(name = "account_enabled", nullable = false)
     private boolean accountEnabled;  // Default: Disabled until email verification
-//    @Column(name = "phone_number", nullable = false, unique = true, length = 15)
-//    private String phoneNumber;
-
-
-
+    @Column(name = "phone_number", nullable = false, unique = true, length = 15)
+    private String phoneNumber;
     @OneToMany(
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
             mappedBy = "user",
@@ -104,7 +102,7 @@ public class User implements UserDetails , Principal {
     public User() {
     }
 
-    public User(UUID id, String firstName, String lastName, String email, String password, LocalDateTime createdAt, LocalDateTime lastModifiedDate, boolean accountLocked, boolean accountEnabled, List<User_Role> userRoles, List<Product> products, List<Order> orders) {
+    public User(UUID id, String firstName, String lastName, String email, String password, LocalDateTime createdAt, LocalDateTime lastModifiedDate, boolean accountLocked, boolean accountEnabled, String phoneNumber, List<User_Role> userRoles, List<Product> products, List<Order> orders) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -114,7 +112,7 @@ public class User implements UserDetails , Principal {
         this.lastModifiedDate = lastModifiedDate;
         this.accountLocked = accountLocked;
         this.accountEnabled = accountEnabled;
-//        this.phoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber;
         this.userRoles = userRoles;
         this.products = products;
         this.orders = orders;
@@ -276,4 +274,18 @@ public class User implements UserDetails , Principal {
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public boolean hasRole(RoleType role) {
+        return userRoles.stream()
+                .anyMatch(userRole -> userRole.getRole().getName().equals(role));
+    }
+
 }

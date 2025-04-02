@@ -1,10 +1,7 @@
 package com.mobi.ecommerce.product;
 
 import com.mobi.ecommerce.order.OrderMapper;
-import com.mobi.ecommerce.order.OrderResponse;
-import com.mobi.ecommerce.order_product.OrderProduct;
 import com.mobi.ecommerce.order_product.OrderProductRepository;
-import com.mobi.ecommerce.order_product.OrderProductResponse;
 import com.mobi.ecommerce.security.SecurityUtils;
 import com.mobi.ecommerce.user.User;
 import jakarta.transaction.Transactional;
@@ -15,7 +12,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -23,14 +19,12 @@ public class ProductService {
     private  final  ProductRepository productRepository;
     private final SecurityUtils securityUtils;
     private  final ProductMapper productMapper;
-    private final OrderProductRepository orderProductRepository;
-    private final OrderMapper orderMapper;
-    public ProductService(ProductRepository productRepository, SecurityUtils securityUtils, ProductMapper productMapper, OrderProductRepository orderProductRepository, OrderMapper orderMapper) {
+
+    public ProductService(ProductRepository productRepository, SecurityUtils securityUtils, ProductMapper productMapper) {
         this.productRepository = productRepository;
         this.securityUtils = securityUtils;
         this.productMapper = productMapper;
-        this.orderProductRepository = orderProductRepository;
-        this.orderMapper = orderMapper;
+
     }
 
     public ProductResponse createProduct(ProductRequest productRequest) {

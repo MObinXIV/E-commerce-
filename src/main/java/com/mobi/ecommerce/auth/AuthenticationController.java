@@ -23,15 +23,10 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(
-                                                                @RequestBody @Valid AuthenticationRequest request
+    @RequestBody @Valid AuthenticationRequest request
     ){
         return ResponseEntity.ok(authenticationService.login(request));
     }
 
-//    @PostMapping("/activate")
-//    public ResponseEntity<String> activateAccount(@RequestParam String token) {
-//        authenticationService.activateAccount(token);
-//        return ResponseEntity.ok("active_account");
-//    }
 
 }
