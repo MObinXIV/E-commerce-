@@ -10,6 +10,8 @@ spring:
       ddl-auto: create-drop
     properties:
       hibernate:
+        maximum-pool-size: 10
+        minimum-idle: 5
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
