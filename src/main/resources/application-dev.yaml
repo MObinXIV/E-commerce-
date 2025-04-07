@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     properties:
       hibernate:
         maximum-pool-size: 10
@@ -15,7 +15,9 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-
+  logging:
+    level:
+      org.flywaydb: DEBUG
   mail:
     host: mail_dev_ecommerce  # Use Docker service name
     port: 1025
@@ -53,3 +55,4 @@ application:
 #          auth: true
 #          starttls:
 #            enable: true
+# docker exec -it postgres_sql-ecommerce  psql -U username -d ecommerce -> got inside db
