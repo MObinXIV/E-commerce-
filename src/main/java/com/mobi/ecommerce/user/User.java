@@ -124,6 +124,22 @@ public class User implements UserDetails , Principal {
         this.orders = orders;
     }
 
+    public User(String firstName, String lastName, String email, String password, LocalDateTime createdAt, LocalDateTime lastModifiedDate, boolean accountLocked, boolean accountEnabled, String phoneNumber, Gender gender, List<User_Role> userRoles, List<Product> products, List<Order> orders) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.createdAt = createdAt;
+        this.lastModifiedDate = lastModifiedDate;
+        this.accountLocked = accountLocked;
+        this.accountEnabled = accountEnabled;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+        this.userRoles = userRoles;
+        this.products = products;
+        this.orders = orders;
+    }
+
     public List <User_Role> getUserRoles(){
         return  userRoles;
     }
