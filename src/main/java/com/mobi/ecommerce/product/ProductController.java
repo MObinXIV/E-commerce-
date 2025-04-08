@@ -1,6 +1,4 @@
 package com.mobi.ecommerce.product;
-
-import com.mobi.ecommerce.order.OrderResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +26,7 @@ public class ProductController {
     @PatchMapping("/{productId}")
     public ResponseEntity<ProductResponse> updateOrder(
             @PathVariable UUID productId,
-            @Valid @RequestBody ProductRequest productRequest
+            @Valid @RequestBody ProductUpdateRequest productRequest
             ){
         return ResponseEntity.ok(productService.updateProduct(productId,productRequest));
     }
@@ -43,5 +41,4 @@ public class ProductController {
          productService.deleteProduct(productId);
         return ResponseEntity.noContent().build();
     }
-
 }

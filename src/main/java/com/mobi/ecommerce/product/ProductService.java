@@ -56,7 +56,7 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductResponse updateProduct(UUID productId,ProductRequest productRequest){
+    public ProductResponse updateProduct(UUID productId,ProductUpdateRequest productRequest){
         User user = securityUtils.getAuthenticatedUser();
 
         Product product = productRepository.findById(productId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
@@ -74,7 +74,6 @@ public class ProductService {
         product.setUpdatedAt(LocalDateTime.now()); // Update timestamp
 
         return productMapper.toProductResponse(product);
-
     }
 
     public ProductResponse getProductById(UUID productId) {
