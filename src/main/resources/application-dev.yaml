@@ -55,4 +55,3 @@ application:
 #          auth: true
 #          starttls:
 #            enable: true
-# docker exec -it postgres_sql-ecommerce  psql -U username -d ecommerce -> got inside db
