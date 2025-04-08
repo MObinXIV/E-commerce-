@@ -72,6 +72,11 @@ public class User implements UserDetails , Principal {
     private boolean accountEnabled;  // Default: Disabled until email verification
     @Column(name = "phone_number", nullable = false, unique = true, length = 15)
     private String phoneNumber;
+
+    @Enumerated(EnumType.STRING)
+    @Column( nullable = false)
+    private  Gender gender;
+
     @OneToMany(
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
             mappedBy = "user",
@@ -102,7 +107,7 @@ public class User implements UserDetails , Principal {
     public User() {
     }
 
-    public User(UUID id, String firstName, String lastName, String email, String password, LocalDateTime createdAt, LocalDateTime lastModifiedDate, boolean accountLocked, boolean accountEnabled, String phoneNumber, List<User_Role> userRoles, List<Product> products, List<Order> orders) {
+    public User(UUID id, String firstName, String lastName, String email, String password, LocalDateTime createdAt, LocalDateTime lastModifiedDate, boolean accountLocked, boolean accountEnabled, String phoneNumber, Gender gender, List<User_Role> userRoles, List<Product> products, List<Order> orders) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -113,6 +118,7 @@ public class User implements UserDetails , Principal {
         this.accountLocked = accountLocked;
         this.accountEnabled = accountEnabled;
         this.phoneNumber = phoneNumber;
+        this.gender = gender;
         this.userRoles = userRoles;
         this.products = products;
         this.orders = orders;
@@ -288,4 +294,11 @@ public class User implements UserDetails , Principal {
                 .anyMatch(userRole -> userRole.getRole().getName().equals(role));
     }
 
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
 }

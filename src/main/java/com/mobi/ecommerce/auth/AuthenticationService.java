@@ -54,6 +54,7 @@ public class AuthenticationService {
         user.setEmail(request.getEmail());
         user.setPhoneNumber(request.getPhoneNumber());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setGender(request.getGender());
         user.setAccountLocked(false);
         user.setAccountEnabled(true);
         user.addUserRole(new User_Role(user,userRole)); // Correctly adds role to the list
@@ -102,24 +103,24 @@ public class AuthenticationService {
 //
 //    }
 
-    private void sendEmailValidation(User user) {
-        var token = jwtService.generateToken(user);
-        System.out.println("📧 Sending activation email to: " + user.getEmail());
-        System.out.println("🔗 Activation link: " + activationUrl + "?token=" + token);
-
-        try {
-            emailService.sendEmail(
-                    user.getEmail(),
-                    user.fullName(),
-                    EmailTemplateName.ACTIVE_ACCOUNT,
-                    activationUrl,
-                    token,
-                    "Activate Your Account"
-            );
-            System.out.println("📧 Activation email sent to: " + user.getEmail());
-        } catch (Exception e) {  // Catch generic exception instead
-            throw new RuntimeException("Failed to send activation email", e);
-        }
-    }
+//    private void sendEmailValidation(User user) {
+//        var token = jwtService.generateToken(user);
+//        System.out.println("📧 Sending activation email to: " + user.getEmail());
+//        System.out.println("🔗 Activation link: " + activationUrl + "?token=" + token);
+//
+//        try {
+//            emailService.sendEmail(
+//                    user.getEmail(),
+//                    user.fullName(),
+//                    EmailTemplateName.ACTIVE_ACCOUNT,
+//                    activationUrl,
+//                    token,
+//                    "Activate Your Account"
+//            );
+//            System.out.println("📧 Activation email sent to: " + user.getEmail());
+//        } catch (Exception e) {  // Catch generic exception instead
+//            throw new RuntimeException("Failed to send activation email", e);
+//        }
+//    }
 
 }

@@ -1,7 +1,9 @@
 package com.mobi.ecommerce.auth;
 
+import com.mobi.ecommerce.user.Gender;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class RegistrationRequest {
@@ -18,6 +20,12 @@ public class RegistrationRequest {
     @NotBlank(message = "Phone number is required")
     @Size(min = 10, max = 15, message = "Phone number must be between 10 and 15 characters")
     private String phoneNumber;
+    @NotNull(message = "gender shouldn't be null")
+    private Gender gender;
+
+    public RegistrationRequest(Gender gender) {
+        this.gender = gender;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -57,5 +65,13 @@ public class RegistrationRequest {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 }

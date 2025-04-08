@@ -2,7 +2,6 @@ package com.mobi.ecommerce.user;
 
 import com.mobi.ecommerce.security.SecurityUtils;
 import jakarta.transaction.Transactional;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
