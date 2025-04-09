@@ -1,5 +1,6 @@
 package com.mobi.ecommerce.order;
 
+import com.mobi.ecommerce.exception.NotFound;
 import com.mobi.ecommerce.order_product.OrderProduct;
 import com.mobi.ecommerce.order_product.OrderProductId;
 import com.mobi.ecommerce.order_product.OrderProductRepository;
@@ -66,7 +67,7 @@ public class OrderService {
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
 
             if (product.getStock() < productRequest.getQuantity()) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insufficient stock for: " + product.getProductName());
+                throw new NotFound("Insufficient stock for: " + product.getProductName());
             }
 
             // update stock and save product
@@ -119,7 +120,7 @@ public class OrderService {
     }
     public  OrderResponse getOrderById(UUID id ){
         User user = securityUtils.getAuthenticatedUser();
-        Order order= orderRepository.findByIdAndUserId(id,user.getId()).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"order is not found"));
+        Order order= orderRepository.findByIdAndUserId(id,user.getId()).orElseThrow(()->new NotFound("order is not found"));
         applyLock(order);
         return orderMapper.toOrderResponse(order);
     }

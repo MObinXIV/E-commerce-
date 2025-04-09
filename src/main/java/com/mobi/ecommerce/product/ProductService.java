@@ -1,5 +1,6 @@
 package com.mobi.ecommerce.product;
 
+import com.mobi.ecommerce.exception.NotFound;
 import com.mobi.ecommerce.order.OrderMapper;
 import com.mobi.ecommerce.order_product.OrderProductRepository;
 import com.mobi.ecommerce.security.SecurityUtils;
@@ -79,7 +80,7 @@ public class ProductService {
     public ProductResponse getProductById(UUID productId) {
         User user = securityUtils.getAuthenticatedUser();
         Product product= productRepository.findByIdAndUserId(productId, user.getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
+                .orElseThrow(() -> new NotFound("Product not found"));
     return productMapper.toProductResponse(product);
     }
 
