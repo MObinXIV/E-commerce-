@@ -28,6 +28,9 @@ public class ProductResponse {
         this.userId = userId;
     }
 
+    public ProductResponse() {
+    }
+
 
     public UUID getId() {
         return id;
