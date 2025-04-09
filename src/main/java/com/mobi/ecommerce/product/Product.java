@@ -76,6 +76,17 @@ public class Product {
         this.orderProducts = orderProducts;
     }
 
+    public Product(String productName, String productDescription, BigDecimal product_price, Integer stock, LocalDateTime createdAt, LocalDateTime updatedAt, User user, List<OrderProduct> orderProducts) {
+        this.productName = productName;
+        this.productDescription = productDescription;
+        this.product_price = product_price;
+        this.stock = stock;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.user = user;
+        this.orderProducts = orderProducts;
+    }
+
     public String getProductName() {
         return productName;
     }

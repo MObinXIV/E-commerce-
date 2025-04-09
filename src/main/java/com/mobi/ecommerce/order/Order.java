@@ -55,6 +55,20 @@ public class Order {
     @OneToMany(mappedBy = "order", orphanRemoval = true)
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
+    public Order(OrderStatus orderStatus, PaymentMethod paymentMethod, BigDecimal totalPrice, LocalDateTime createdAt, LocalDateTime lastModifiedDate, Float shippingFee, String phoneNumber, String shippingAddress, boolean isLocked, User user, List<OrderProduct> orderProducts) {
+        this.orderStatus = orderStatus;
+        this.paymentMethod = paymentMethod;
+        this.totalPrice = totalPrice;
+        this.createdAt = createdAt;
+        this.lastModifiedDate = lastModifiedDate;
+        this.shippingFee = shippingFee;
+        this.phoneNumber = phoneNumber;
+        this.shippingAddress = shippingAddress;
+        this.isLocked = isLocked;
+        this.user = user;
+        this.orderProducts = orderProducts;
+    }
+
     public List<OrderProduct> getOrderProducts() {
         return orderProducts;
     }
