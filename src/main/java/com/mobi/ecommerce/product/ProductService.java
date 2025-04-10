@@ -1,14 +1,11 @@
 package com.mobi.ecommerce.product;
 
 import com.mobi.ecommerce.exception.NotFound;
-import com.mobi.ecommerce.order.OrderMapper;
-import com.mobi.ecommerce.order_product.OrderProductRepository;
+import com.mobi.ecommerce.exception.RequestValidationException;
 import com.mobi.ecommerce.security.SecurityUtils;
 import com.mobi.ecommerce.user.User;
 import jakarta.transaction.Transactional;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +31,7 @@ public class ProductService {
 
         if (existingProduct.isPresent()) {
 
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Product already exists, update stock instead.");
+            throw new NotFound("Product already exists, update stock instead.");
         }
 
         Product product = new Product();
@@ -60,18 +57,30 @@ public class ProductService {
     public ProductResponse updateProduct(UUID productId,ProductUpdateRequest productRequest){
         User user = securityUtils.getAuthenticatedUser();
 
-        Product product = productRepository.findById(productId).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
+        Product product = productRepository.findById(productId).orElseThrow(()-> new NotFound("Product not found"));
+        boolean  changes = false;
         // Ensure the authenticated user is the owner of the product
         if(!product.getUser().getId().equals(user.getId()))
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can only update your own products");
+            throw new NotFound("You can only update your own products");
         if (productRequest.getProductName()!=null)
+        {
             product.setProductName(productRequest.getProductName());
+            changes = true;
+        }
         if (productRequest.getProductPrice()!=null)
-            product.setProduct_price(productRequest.getProductPrice());
+        {product.setProduct_price(productRequest.getProductPrice());
+        changes=true;
+        }
         if (productRequest.getProductDescription()!=null)
-            product.setProductDescription(productRequest.getProductDescription());
+        {product.setProductDescription(productRequest.getProductDescription());
+            changes=true;}
         if (productRequest.getStock() != null)
-            product.setStock(productRequest.getStock());
+        {product.setStock(productRequest.getStock());
+        changes=true;
+        }
+        if (!changes) {
+            throw new RequestValidationException("no data changes found");
+        }
         product.setUpdatedAt(LocalDateTime.now()); // Update timestamp
 
         return productMapper.toProductResponse(product);
@@ -88,7 +97,7 @@ public class ProductService {
     public void deleteProduct(UUID productId){
         User user = securityUtils.getAuthenticatedUser();
         Product existingProduct = productRepository.findByIdAndUserId(productId,user.getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
+                .orElseThrow(() -> new NotFound( "Product not found"));
         productRepository.delete(existingProduct);
     }
 }
