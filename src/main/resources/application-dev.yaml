@@ -1,13 +1,12 @@
 spring:
   datasource:
-    url: jdbc:postgresql://postgres_sql-ecommerce:5432/ecommerce  # Use Docker service name
+
+    url: jdbc:postgresql://localhost:5431/ecommerce  # Use Docker service name
     username: username
     password: secret
-    driver-class-name: org.postgresql.Driver  # Remove if using Spring Boot 3+
-
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
     properties:
       hibernate:
         maximum-pool-size: 10
@@ -15,33 +14,28 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-  logging:
-    level:
-      org.flywaydb: DEBUG
-  mail:
-    host: mail_dev_ecommerce  # Use Docker service name
-    port: 1025
-    properties:
-      mail:
-        smtp:
-          auth: false  # MailDev doesn’t require authentication
-          starttls:
-            enable: false
-          ssl:
-            trust: "*"
-          connectiontimeout: 5000
-          timeout: 3000
-          writetimeout: 5000
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+#  mail:
+#    host: mail_dev_ecommerce  # Use Docker service name
+#    port: 1025
+#    properties:
+#      mail:
+#        smtp:
+#          auth: false  # MailDev doesn’t require authentication
+#          starttls:
+#            enable: false
+#          ssl:
+#            trust: "*"
+#          connectiontimeout: 5000
+#          timeout: 3000
+#          writetimeout: 5000
 
-  thymeleaf:
-    prefix: classpath:/templates/
-    suffix: .html
-    check-template-location: true
-
-application:
-  mailing:
-    frontend:
-      activation-url: http://localhost:4200/activate-account
+#application:
+#  mailing:
+#    frontend:
+#      activation-url: http://localhost:4200/activate-account
 
 #  # Gmail SMTP Configuration (If needed for production)
 #  gmail:
