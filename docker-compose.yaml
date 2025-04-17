@@ -26,7 +26,7 @@ services:
       - backend
     environment:
       SPRING_PROFILES_ACTIVE: dev
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_sql-ecommerce:5432/ecommerce
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ecommerce
       SPRING_DOCKER_COMPOSE_ENABLED: false
 
 volumes:
