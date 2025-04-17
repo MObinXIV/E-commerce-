@@ -27,6 +27,18 @@ public class RegistrationRequest {
         this.gender = gender;
     }
 
+    public RegistrationRequest(String firstName, String lastName, String email, String password, String phoneNumber, Gender gender) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+    }
+
+    public RegistrationRequest() {
+    }
+
     public String getFirstName() {
         return firstName;
     }

@@ -47,6 +47,7 @@ public class AdminService {
         admin.setLastName(request.getLastName());
         admin.setPhoneNumber(request.getPhoneNumber());
         admin.setEmail(request.getEmail());
+        admin.setGender(request.getGender());
         admin.setPassword(passwordEncoder.encode(request.getPassword()));
         admin.setAccountLocked(false);
         admin.setAccountEnabled(true);

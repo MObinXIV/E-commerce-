@@ -248,8 +248,8 @@ class ProductServiceTest {
          Product product = new Product();
          product.setId(productId);
          product.setUser(user);
-        ProductResponse productResponse = new ProductResponse(); // you can customize this if needed
-
+        ProductResponse productResponse = new ProductResponse();
+        // test the user & get him
         when(securityUtils.getAuthenticatedUser()).thenReturn(user);
         when(productRepository.findByIdAndUserId(productId,user.getId())).thenReturn(Optional.of(product));
         when(productMapper.toProductResponse(product)).thenReturn(productResponse);

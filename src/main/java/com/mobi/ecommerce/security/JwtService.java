@@ -4,11 +4,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
 import java.security.Key;
 import java.time.Instant;
 import java.util.Date;
@@ -55,8 +53,8 @@ private Claims extractAllClaims(String token){
                 .toList();
         return Jwts
                 .builder()
+                .setClaims(extraClaims) // Adds any additional claims (e.g., roles, permissions)
                 .setSubject(userDetails.getUsername()) // Sets the subject (usually the username/email)
-                .addClaims(extraClaims) // Adds any additional claims (e.g., roles, permissions)
                 .setIssuedAt(Date.from(Instant.now())) // Sets the "issued at" claim to the current time
                 .setExpiration(Date.from(Instant.now().plus(15,DAYS)) )
                 .claim("authorities",authorities)

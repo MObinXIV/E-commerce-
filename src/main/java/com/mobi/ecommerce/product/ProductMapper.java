@@ -7,5 +7,4 @@ import org.mapstruct.Mapping;
 public interface ProductMapper {
     @Mapping(source = "user.id", target = "userId")
     ProductResponse toProductResponse(Product product);
-    Product toProduct(ProductRequest request);
 }

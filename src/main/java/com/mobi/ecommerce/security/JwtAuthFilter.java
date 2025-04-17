@@ -42,7 +42,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
         // get the jwt
         jwt = autHeader.substring(7);
-        System.out.println("Received JWT: " + jwt); // Debugging Log
+//        System.out.println("Received JWT: " + jwt); // Debugging Log
         try {
             final String userEmail = jwtService.extractUsername(jwt);
             System.out.println("Extracted Username: " + userEmail); // Debugging Log

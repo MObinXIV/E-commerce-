@@ -1,7 +1,5 @@
 package com.mobi.ecommerce.auth;
 
-import com.mobi.ecommerce.email.EmailService;
-import com.mobi.ecommerce.email.EmailTemplateName;
 import com.mobi.ecommerce.role.Role;
 import com.mobi.ecommerce.role.RoleRepository;
 import com.mobi.ecommerce.role.RoleType;
@@ -29,19 +27,15 @@ public class AuthenticationService {
     private  final JwtService jwtService;
     private final RoleRepository roleRepository;
     private final AuthenticationManager authenticationManager;
-    private  final EmailService emailService;
-    @Value("${application.mailing.frontend.activation-url}")
-    private String activationUrl;
 
     @Autowired
-    public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, RoleRepository roleRepository, AuthenticationManager authenticationManager, EmailService emailService) {
+    public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, RoleRepository roleRepository, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.roleRepository = roleRepository;
         this.authenticationManager = authenticationManager;
-        this.emailService = emailService;
-        System.out.println("📧 EmailService injected: " + (emailService != null));
+
     }
     @Transactional
     public AuthenticationResponse register(RegistrationRequest request) {
@@ -64,11 +58,6 @@ public class AuthenticationService {
         var activationToken = jwtService.generateToken(user);
         return new AuthenticationResponse(activationToken);
     }
-    @PostConstruct
-    public void init() {
-        System.out.println("Activation URL: " + activationUrl);
-    }
-
     @Transactional
     public AuthenticationResponse login(AuthenticationRequest request){
       var auth=  authenticationManager.authenticate(

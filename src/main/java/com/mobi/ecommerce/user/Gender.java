@@ -5,4 +5,14 @@ public enum Gender {
     FEMALE,
     OTHER
 }
-//Todo -> add the address to the user , gender  / do paging sorting .. / modify the update in product / add imgUrl in product
+/*
+*
+application.properties
+ECommerceApplication.java
+JwtAuthFilter.java
+pom.xml
+User.java
+UserDetailsServiceImpl.java
+UserRepository.java
+* */
+//Todo -> add the address to the user , add age    / do paging sorting .. / add imgUrl in product / Handle admin with migration , All fck'n user test & integration test(there's videos in security sections)
