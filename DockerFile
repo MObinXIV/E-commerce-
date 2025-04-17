@@ -1,16 +1,10 @@
-# Stage 1: Build the JAR
-FROM openjdk:21-jdk AS build
+# Build stage
+FROM openjdk:23-jdk AS build  # Use the correct JDK 23 image
 WORKDIR /app
-COPY pom.xml .
-COPY src src
-COPY mvnw .
-COPY .mvn .mvn
-RUN chmod +x ./mvnw
-RUN ./mvnw clean package -DskipTests
+COPY . .
+RUN chmod +x ./mvnw && ./mvnw clean package -DskipTests
 
-# Stage 2: Create the final image
-FROM openjdk:21-jdk
-WORKDIR /app
-COPY --from=build /app/target/your-app-*.jar app.jar
+# Runtime stage
+FROM openjdk:23-jdk           # Match the same version
+COPY --from=build /app/target/*.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
-EXPOSE 8080
