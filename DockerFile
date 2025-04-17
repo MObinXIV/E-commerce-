@@ -1,10 +1,11 @@
 # Build stage
-FROM openjdk:23-jdk AS build  # Use the correct JDK 23 image
+FROM eclipse-temurin:21-jdk AS build
 WORKDIR /app
 COPY . .
-RUN chmod +x ./mvnw && ./mvnw clean package -DskipTests
+RUN ./mvnw clean package -DskipTests
 
 # Runtime stage
-FROM openjdk:23-jdk           # Match the same version
+FROM eclipse-temurin:21-jdk
+WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
