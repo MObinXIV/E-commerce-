@@ -1,0 +1,38 @@
+services:
+  postgres:
+    container_name: postgres_sql-ecommerce
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=ecommerce
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_USER=username
+      - PGDATA=/var/lib/postgresql/data
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - '5431:5432'
+    networks:
+      - backend
+    restart: unless-stopped
+
+  ecommerce-api:
+    container_name: ecommerce_app
+    image: mobinxiv/e-commerce
+    depends_on:
+      - postgres
+    ports:
+      - '8080:8080'
+    networks:
+      - backend
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ecommerce
+      SPRING_DOCKER_COMPOSE_ENABLED: false
+
+volumes:
+  postgres:
+    driver: local
+
+networks:
+  backend:
+    driver: bridge

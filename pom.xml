@@ -8,17 +8,22 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.4.3</version>
+
         <relativePath/>
     </parent>
 
     <groupId>com.mobi</groupId>
-    <artifactId>E-Commerce</artifactId>
+    <artifactId>e-commerce</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>E-Commerce</name>
+    <name>mobinxiv</name>
     <description>E-Commerce</description>
-
+    <organization>
+        <name>mobinxiv</name>
+        <url>https://github.com/MObinXIV</url>
+    </organization>
     <properties>
         <java.version>21</java.version>
+        <docker.username>mobinxiv</docker.username>
     </properties>
 
     <dependencies>
@@ -77,6 +82,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -209,6 +215,38 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+            <groupId>com.google.cloud.tools</groupId>
+            <artifactId>jib-maven-plugin</artifactId>
+            <version>3.4.5</version>
+                <configuration>
+                    <from>
+                        <image>eclipse-temurin:21</image>
+                        <platforms>
+                            <platform>
+                                <architecture>arm64</architecture>
+                                <os>linux</os>
+                            </platform>
+                            <platform>
+                                <architecture>amd64</architecture>
+                                <os>linux</os>
+                            </platform>
+                        </platforms>
+
+                    </from>
+                    <to>
+                       <image>docker.io/${organization.name}/${project.artifactId}:${project.version}</image>
+<!--                        <image>docker.io/mobin/E-Commerce :0.0.1-SNAPSHOT</image>-->
+
+<!--                        <image>docker.io/mobinxiv/E-Commerce:0.0.1-SNAPSHOT</image>-->
+
+                        <tags>
+                            <tag>latest</tag>
+                        </tags>
+
+                    </to>
+                </configuration>
             </plugin>
 
         </plugins>
