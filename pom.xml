@@ -129,7 +129,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Docker Compose -->
+<!--         Docker Compose -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-docker-compose</artifactId>
@@ -236,7 +236,7 @@
 
                     </from>
                     <to>
-                       <image>docker.io/${organization.name}/${project.artifactId}:${project.version}</image>
+                       <image>docker.io/${project.organization.name}/${project.artifactId}:${project.version}</image>
 <!--                        <image>docker.io/mobin/E-Commerce :0.0.1-SNAPSHOT</image>-->
 
 <!--                        <image>docker.io/mobinxiv/E-Commerce:0.0.1-SNAPSHOT</image>-->
