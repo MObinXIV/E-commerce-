@@ -1,0 +1,17 @@
+# src/main/resources/application-prod.yml
+#jdbc:postgresql://postgres:5432/ecommerce
+spring:
+  datasource:
+    url: ${DATABASE_URL} # Recommended for Railway
+  jpa:
+    hibernate:
+      ddl-auto: validate # Or update/create based on your production needs
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        maximum-pool-size: 10 # Keep your pool settings
+        minimum-idle: 5      # Keep your idle settings
+        format_sql: false    # Consider disabling SQL formatting in production
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
