@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: prod  # Changed from dev to prod
   servlet:
     multipart:
       max-file-size: 50MB

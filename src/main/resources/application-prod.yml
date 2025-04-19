@@ -1,9 +1,11 @@
 spring:
-  profiles: prod
+  config:
+    activate:
+      on-profile: prod
   datasource:
-    url: jdbc:postgresql://localhost:5432/ecommerce  # Changed to 5432
-    username: prod_username                          # Change to your prod credentials
-    password: prod_password                         # Change to your prod credentials
+    url: jdbc:postgresql://postgres:5432/ecommerce  # Using container name
+    username: username
+    password: secret
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
