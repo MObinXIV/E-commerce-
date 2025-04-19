@@ -1,17 +1,15 @@
-# src/main/resources/application-prod.yml
-#
 spring:
   datasource:
-    url: jdbc:postgresql://postgres:5432/ecommerce # Recommended for Railway
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: validate # Or update/create based on your production needs
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        maximum-pool-size: 10 # Keep your pool settings
-        minimum-idle: 5      # Keep your idle settings
-        format_sql: false    # Consider disabling SQL formatting in production
+      ddl-auto: validate
   flyway:
     enabled: true
     baseline-on-migrate: true
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    user: ${DB_USER}
+    password: ${DB_PASSWORD}
