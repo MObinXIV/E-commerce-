@@ -4,8 +4,8 @@ spring:
       on-profile: prod
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOST:postgres_sql-ecommerce}:${POSTGRES_PORT:5432}/ecommerce # Using container name
-    username: username
-    password: secret
+    username: ${DB_USER:username}
+    password: ${DB_PASSWORD:secret}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
