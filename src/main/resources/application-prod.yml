@@ -1,8 +1,8 @@
 # src/main/resources/application-prod.yml
-#jdbc:postgresql://postgres:5432/ecommerce
+#
 spring:
   datasource:
-    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE} # Recommended for Railway
+    url: jdbc:postgresql://postgres:5432/ecommerce # Recommended for Railway
   jpa:
     hibernate:
       ddl-auto: validate # Or update/create based on your production needs

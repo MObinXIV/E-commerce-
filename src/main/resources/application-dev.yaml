@@ -1,10 +1,11 @@
 spring:
   datasource:
 
-    url: ${SPRING_DATASOURCE_URL}
+    url: jdbc:postgresql://localhost:5431/ecommerce
     # Use Docker service name
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    username: username
+    password: secret
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: validate
@@ -20,35 +21,4 @@ spring:
     enabled: true
     baseline-on-migrate: true
 
-#  mail:
-#    host: mail_dev_ecommerce  # Use Docker service name
-#    port: 1025
-#    properties:
-#      mail:
-#        smtp:
-#          auth: false  # MailDev doesn’t require authentication
-#          starttls:
-#            enable: false
-#          ssl:
-#            trust: "*"
-#          connectiontimeout: 5000
-#          timeout: 3000
-#          writetimeout: 5000
 
-#application:
-#  mailing:
-#    frontend:
-#      activation-url: http://localhost:4200/activate-account
-
-#  # Gmail SMTP Configuration (If needed for production)
-#  gmail:
-#    host: smtp.gmail.com
-#    port: 587
-#    username: hady@gmail.com
-#    password: secret # Use an App Password, not your actual Gmail password!
-#    properties:
-#      mail:
-#        smtp:
-#          auth: true
-#          starttls:
-#            enable: true
