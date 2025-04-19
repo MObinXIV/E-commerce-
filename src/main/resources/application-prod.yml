@@ -3,9 +3,9 @@ spring:
     activate:
       on-profile: prod
   datasource:
-    url: jdbc:postgresql://${POSTGRES_HOST:postgres_sql-ecommerce}:${POSTGRES_PORT:5432}/ecommerce # Using container name
-    username: ${DB_USER:username}
-    password: ${DB_PASSWORD:secret}
+    url: ${SPRING_DATASOURCE_URL} # Using container name
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -20,3 +20,5 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
+
+    #JDBC_URI=jdbc:postgresql://ep-snowy-field-a2jxyy8k.eu-central-1.pg.koyeb.app/koyebdb?user=koyeb-adm&password=npg_sjk7vf0YoicI
