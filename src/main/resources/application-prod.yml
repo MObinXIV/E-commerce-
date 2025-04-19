@@ -3,7 +3,7 @@ spring:
     activate:
       on-profile: prod
   datasource:
-    url: jdbc:postgresql://ep-snowy-field-a2jxyy8k.eu-central-1.pg.koyeb.app/koyebdb?sslmode=require # Using container name
+    url: jdbc:postgresql://ep-snowy-field-a2jxyy8k.eu-central-1.pg.koyeb.app/koyebdb?sslmode=require
     username: koyeb-adm
     password: npg_sjk7vf0YoicI
     driver-class-name: org.postgresql.Driver
@@ -17,6 +17,6 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-
-
-    #JDBC_URI=jdbc:postgresql://ep-snowy-field-a2jxyy8k.eu-central-1.pg.koyeb.app/koyebdb?user=koyeb-adm&password=npg_sjk7vf0YoicI
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
