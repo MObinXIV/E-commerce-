@@ -39,7 +39,7 @@ jobs:
       - name: Build & run Unit/Integrations Tests with Maven
         run: mvn -ntp -B verify
 
-
+##
 #      - name: Set up JDK 17
 #        uses: actions/setup-java@v2
 #        with:
