@@ -8,8 +8,7 @@ on:
     paths:
       - src/**
       - pom.xml
-#      - docker-compose.yaml
-#      - dockerfile
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
