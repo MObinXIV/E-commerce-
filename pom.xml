@@ -17,13 +17,15 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>mobinxiv</name>
     <description>E-Commerce</description>
-    <organization>
-        <name>mobinxiv</name>
-        <url>https://github.com/MObinXIV</url>
-    </organization>
+<!--    <organization>-->
+<!--        <name>mobinxiv</name>-->
+<!--        <url>https://github.com/MObinXIV</url>-->
+<!--    </organization>-->
     <properties>
         <java.version>21</java.version>
         <docker.username>mobinxiv</docker.username>
+        <docker.image.name>e-commerce</docker.image.name>
+        <docker.image.tag/>
     </properties>
 
     <dependencies>
@@ -237,7 +239,7 @@
 
                     </from>
                     <to>
-                       <image>docker.io/${project.organization.name}/${project.artifactId}:${project.version}</image>
+                       <image>docker.io/${docker.username}/${docker.image.name}:${docker.image.tag}</image>
 <!--                        <image>docker.io/mobin/E-Commerce :0.0.1-SNAPSHOT</image>-->
 
 <!--                        <image>docker.io/mobinxiv/E-Commerce:0.0.1-SNAPSHOT</image>-->
