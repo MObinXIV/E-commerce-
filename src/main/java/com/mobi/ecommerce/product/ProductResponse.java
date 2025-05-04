@@ -1,5 +1,6 @@
 package com.mobi.ecommerce.product;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mobi.ecommerce.order_product.OrderProductResponse;
 
 import java.math.BigDecimal;
@@ -11,17 +12,17 @@ public class ProductResponse {
      private UUID id;
     private String productName;
     private String productDescription;
-    private BigDecimal product_price;
+    private BigDecimal productPrice;
     private int stock;
     private LocalDateTime createdAt;
     private UUID userId;
 //    private List<OrderProductResponse> orderProducts;
 
-    public ProductResponse(UUID id, String productName, String productDescription, BigDecimal product_price, int stock, LocalDateTime createdAt, UUID userId) {
+    public ProductResponse(UUID id, String productName, String productDescription, BigDecimal productPrice, int stock, LocalDateTime createdAt, UUID userId) {
         this.id = id;
         this.productName = productName;
         this.productDescription = productDescription;
-        this.product_price = product_price;
+        this.productPrice = productPrice;
         this.stock = stock;
 
         this.createdAt = createdAt;
@@ -56,13 +57,6 @@ public class ProductResponse {
         this.productDescription = productDescription;
     }
 
-    public BigDecimal getProductPrice() {
-        return product_price;
-    }
-
-    public void setProductPrice(BigDecimal product_price) {
-        this.product_price = product_price;
-    }
 
     public int getStock() {
         return stock;
@@ -86,5 +80,14 @@ public class ProductResponse {
 
     public void setUserId(UUID userId) {
         this.userId = userId;
+    }
+
+
+    public BigDecimal getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(BigDecimal productPrice) {
+        this.productPrice = productPrice;
     }
 }

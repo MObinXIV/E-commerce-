@@ -1,5 +1,6 @@
 package com.mobi.ecommerce.product;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -14,7 +15,6 @@ public class ProductRequest {
     private String productDescription;
     @NotNull(message = "Product price cannot be null")
     @DecimalMin(value = "0.0", inclusive = false, message = "Product price must be greater than 0")
-
     private BigDecimal productPrice;
     @NotNull(message = "Stock cannot be null")
     @PositiveOrZero(message = "Stock must be zero or a positive number")
@@ -43,14 +43,17 @@ public class ProductRequest {
     }
 
 
-    public BigDecimal getProductPrice() {
-        return productPrice;
-    }
-
-
 
     public Integer getStock() {
         return stock;
     }
 
+
+    public BigDecimal getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(BigDecimal productPrice) {
+        this.productPrice = productPrice;
+    }
 }

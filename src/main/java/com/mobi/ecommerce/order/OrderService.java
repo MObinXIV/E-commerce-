@@ -75,7 +75,7 @@ public class OrderService {
             productRepository.save(product);
 
             // Calculate total price
-            totalPrice = totalPrice.add(product.getProduct_price().multiply(BigDecimal.valueOf(productRequest.getQuantity())));
+            totalPrice = totalPrice.add(product.getProductPrice().multiply(BigDecimal.valueOf(productRequest.getQuantity())));
 
             // Save order-product new relation
             OrderProduct orderProduct = new OrderProduct(
@@ -84,7 +84,7 @@ public class OrderService {
                     order,
                     LocalDateTime.now(),
                     LocalDateTime.now(),
-                    product.getProduct_price().multiply(BigDecimal.valueOf(productRequest.getQuantity())),
+                    product.getProductPrice().multiply(BigDecimal.valueOf(productRequest.getQuantity())),
                     productRequest.getQuantity()
 
             );
@@ -181,7 +181,7 @@ public class OrderService {
                         productRepository.save(product);
                         // update order product
                         orderProduct.setQuantity(productRequest.getQuantity());
-                        orderProduct.setPrice(product.getProduct_price().multiply(BigDecimal.valueOf(productRequest.getQuantity())));
+                        orderProduct.setPrice(product.getProductPrice().multiply(BigDecimal.valueOf(productRequest.getQuantity())));
                         orderProduct.setLastModifiedDate(LocalDateTime.now());
                         isModified = true;
                     }

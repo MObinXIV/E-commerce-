@@ -36,7 +36,7 @@ public class ProductService {
 
         Product product = new Product();
         product.setProductName(productRequest.getProductName());  // FIXED
-        product.setProduct_price(productRequest.getProductPrice()); // FIXED
+        product.setProductPrice(productRequest.getProductPrice()); // FIXED
         product.setProductDescription(productRequest.getProductDescription()); // FIXED
         product.setStock(productRequest.getStock());
         product.setUser(user);
@@ -68,7 +68,7 @@ public class ProductService {
             changes = true;
         }
         if (productRequest.getProductPrice()!=null)
-        {product.setProduct_price(productRequest.getProductPrice());
+        {product.setProductPrice(productRequest.getProductPrice());
         changes=true;
         }
         if (productRequest.getProductDescription()!=null)

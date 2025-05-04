@@ -1,6 +1,7 @@
 package com.mobi.ecommerce.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mobi.ecommerce.order_product.OrderProduct;
 import com.mobi.ecommerce.user.User;
 import jakarta.persistence.*;
@@ -41,7 +42,7 @@ public class Product {
 //            scale = 2
             columnDefinition = "DECIMAL(10,2)" // equal of the 2 previous statements
     )
-    BigDecimal product_price;
+    private BigDecimal productPrice;
     @Column(
             name = "stock",
             nullable = false
@@ -64,11 +65,11 @@ public class Product {
 
 
 
-    public Product(UUID id, String productName, String productDescription, BigDecimal product_price, Integer stock, LocalDateTime createdAt, LocalDateTime updatedAt, User user, List<OrderProduct> orderProducts) {
+    public Product(UUID id, String productName, String productDescription, BigDecimal productPrice, Integer stock, LocalDateTime createdAt, LocalDateTime updatedAt, User user, List<OrderProduct> orderProducts) {
         this.id = id;
         this.productName = productName;
         this.productDescription = productDescription;
-        this.product_price = product_price;
+        this.productPrice = productPrice;
         this.stock = stock;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -76,10 +77,10 @@ public class Product {
         this.orderProducts = orderProducts;
     }
 
-    public Product(String productName, String productDescription, BigDecimal product_price, Integer stock, LocalDateTime createdAt, LocalDateTime updatedAt, User user, List<OrderProduct> orderProducts) {
+    public Product(String productName, String productDescription, BigDecimal productPrice, Integer stock, LocalDateTime createdAt, LocalDateTime updatedAt, User user, List<OrderProduct> orderProducts) {
         this.productName = productName;
         this.productDescription = productDescription;
-        this.product_price = product_price;
+        this.productPrice = productPrice;
         this.stock = stock;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -112,9 +113,7 @@ public class Product {
         return productDescription;
     }
 
-    public BigDecimal getProduct_price() {
-        return product_price;
-    }
+
 
     public Integer getStock() {
         return stock;
@@ -139,9 +138,7 @@ public class Product {
         this.productDescription = productDescription;
     }
 
-    public void setProduct_price(BigDecimal product_price) {
-        this.product_price = product_price;
-    }
+
 
     public void setStock(Integer stock) {
         this.stock = stock;
@@ -176,5 +173,13 @@ public class Product {
     void removeOrderProduct(OrderProduct orderProduct){
         orderProducts.remove(orderProduct);
         orderProduct.setProduct(null);
+    }
+
+    public BigDecimal getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(BigDecimal productPrice) {
+        this.productPrice = productPrice;
     }
 }
