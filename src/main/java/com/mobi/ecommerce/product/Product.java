@@ -1,7 +1,6 @@
 package com.mobi.ecommerce.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mobi.ecommerce.order_product.OrderProduct;
 import com.mobi.ecommerce.user.User;
 import jakarta.persistence.*;

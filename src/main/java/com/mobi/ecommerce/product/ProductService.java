@@ -7,10 +7,12 @@ import com.mobi.ecommerce.user.User;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @Service
 public class ProductService {
@@ -47,10 +49,12 @@ public class ProductService {
         return productMapper.toProductResponse(product);
     }
 
-    public List<ProductResponse> getAllProducts(){
+    public Page<ProductResponse> getAllProducts(int page,int size, String sortBy,String direction){
+        Sort sort= Sort.by(Sort.Direction.fromString(direction),sortBy);
+        Pageable pageable = PageRequest.of(page,size,sort);
+        Page<Product> products= productRepository.findAll(pageable);
 
-        List<Product> products= productRepository.findAll();
-        return products.stream().map(productMapper::toProductResponse).toList();
+        return products.map(productMapper::toProductResponse);
     }
 
     @Transactional

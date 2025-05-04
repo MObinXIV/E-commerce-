@@ -2,7 +2,7 @@ package com.mobi.ecommerce.product;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
+import org.springframework.data.domain.Page;
 import java.util.UUID;
 
 @RestController
@@ -19,8 +19,13 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductResponse>> getAllProducts() {
-        return ResponseEntity.ok(productService.getAllProducts());
+    public ResponseEntity<Page<ProductResponse>> getAllProducts(
+            @RequestParam (defaultValue = "0") int page,
+            @RequestParam (defaultValue = "10") int size,
+            @RequestParam(defaultValue = "productName") String sortBy,
+            @RequestParam (defaultValue = "DESC") String direction
+    ) {
+        return ResponseEntity.ok(productService.getAllProducts(page, size, sortBy, direction));
     }
 
     @PatchMapping("/{productId}")
