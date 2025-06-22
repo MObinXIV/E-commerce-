@@ -54,7 +54,8 @@ public class AdminService {
         admin.addUserRole(new User_Role(admin,role));
         userRepository.save(admin);
         String token = jwtService.generateToken(admin);
-        return new AuthenticationResponse(token);    }
+        String refreshToken= jwtService.generateRefreshToken(admin);
+        return new AuthenticationResponse(token,refreshToken);    }
 
     public AuthenticationResponse login(AuthenticationRequest request){
         var auth = authenticationManager.authenticate(
@@ -68,6 +69,8 @@ public class AdminService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied! Not an admin.");
 
         String token = jwtService.generateToken(admin);
-        return new AuthenticationResponse(token);
+        String refreshToken= jwtService.generateRefreshToken(admin);
+
+        return new AuthenticationResponse(token,refreshToken);
     }
 }

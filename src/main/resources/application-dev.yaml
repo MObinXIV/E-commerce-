@@ -1,7 +1,13 @@
+cors:
+  allowed-origins: "*"
+  allowed-methods: "*"
+
 spring:
   datasource:
 
-    url: jdbc:postgresql://localhost:5431/ecommerce
+    url:  jdbc:postgresql://postgres_sql-ecommerce:5432/ecommerce
+
+#    jdbc:postgresql://localhost:5431/ecommerce
     # Use Docker service name
     username: username
     password: secret

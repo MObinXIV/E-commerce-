@@ -1,5 +1,6 @@
 package com.mobi.ecommerce.auth;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mobi.ecommerce.role.Role;
 import com.mobi.ecommerce.role.RoleRepository;
 import com.mobi.ecommerce.role.RoleType;
@@ -7,24 +8,29 @@ import com.mobi.ecommerce.role.User_Role;
 import com.mobi.ecommerce.security.JwtService;
 import com.mobi.ecommerce.user.User;
 import com.mobi.ecommerce.user.UserRepository;
-import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 
 @Service
 //@Tag(name = "Authentication")
 public class AuthenticationService {
-    private  final UserRepository userRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private  final JwtService jwtService;
+    private final JwtService jwtService;
     private final RoleRepository roleRepository;
     private final AuthenticationManager authenticationManager;
 
@@ -37,6 +43,7 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
 
     }
+
     @Transactional
     public AuthenticationResponse register(RegistrationRequest request) {
         Role userRole = roleRepository.findByName(RoleType.USER)
@@ -51,65 +58,54 @@ public class AuthenticationService {
         user.setGender(request.getGender());
         user.setAccountLocked(false);
         user.setAccountEnabled(true);
-        user.addUserRole(new User_Role(user,userRole)); // Correctly adds role to the list
+        user.addUserRole(new User_Role(user, userRole)); // Correctly adds role to the list
 //        sendEmailValidation(user);
         userRepository.save(user);
 
         var activationToken = jwtService.generateToken(user);
-        return new AuthenticationResponse(activationToken);
+        var refreshToken = jwtService.generateRefreshToken(user);
+        return new AuthenticationResponse(activationToken, refreshToken);
     }
-    @Transactional
-    public AuthenticationResponse login(AuthenticationRequest request){
-      var auth=  authenticationManager.authenticate(
+
+    public AuthenticationResponse login(AuthenticationRequest request) {
+        var auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
                         request.getPassword()
                 )
         );
-        var claims = new HashMap<String,Object>();
-        var user = ((User)auth.getPrincipal());
-        claims.put("fullName",user.fullName());
+        var claims = new HashMap<String, Object>();
+        var user = ((User) auth.getPrincipal());
+        claims.put("fullName", user.fullName());
 
-        var jwtToken = jwtService.generateToken(claims,user);
+        var jwtToken = jwtService.generateToken(claims, user);
+        var refreshToken = jwtService.generateRefreshToken(user);
 
-
-        return new AuthenticationResponse(jwtToken);
+        return new AuthenticationResponse(jwtToken, refreshToken);
     }
-//    @Transactional
-//    public void activateAccount(String token) {
-//        System.out.println("🔍 Received token: " + token);
-//        String email = jwtService.extractUsername(token);
-//        System.out.println("📧 Extracted email: " + email);
-//        User user = userRepository.findByEmail(email)
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//
-//        if (jwtService.isTokenExpired(token)) {
-//            throw new RuntimeException("Activation token has expired. Request a new one.");
-//        }
-//
-//        // ✅ Modify the field directly
-//        user.setAccountEnabled(true);
-//
-//    }
 
-//    private void sendEmailValidation(User user) {
-//        var token = jwtService.generateToken(user);
-//        System.out.println("📧 Sending activation email to: " + user.getEmail());
-//        System.out.println("🔗 Activation link: " + activationUrl + "?token=" + token);
-//
-//        try {
-//            emailService.sendEmail(
-//                    user.getEmail(),
-//                    user.fullName(),
-//                    EmailTemplateName.ACTIVE_ACCOUNT,
-//                    activationUrl,
-//                    token,
-//                    "Activate Your Account"
-//            );
-//            System.out.println("📧 Activation email sent to: " + user.getEmail());
-//        } catch (Exception e) {  // Catch generic exception instead
-//            throw new RuntimeException("Failed to send activation email", e);
-//        }
-//    }
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        final String autHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        final String refreshToken;
+//        final String userEmail;
+        if (autHeader == null || !autHeader.startsWith("Bearer ")) {
+            return;
+        }
+        // get the jwt
+        refreshToken = autHeader.substring(7);
+//        System.out.println("Received JWT: " + jwt); // Debugging Log
+
+        final String userEmail = jwtService.extractUsername(refreshToken);
+
+        if (userEmail != null ) {
+            var user = this.userRepository.findByEmail(userEmail).orElseThrow();
+
+            if (jwtService.isTokenValid(refreshToken, user)) {
+                var accessToken = jwtService.generateToken(user);
+                var authResponse= new AuthenticationResponse(accessToken,refreshToken);
+                new ObjectMapper().writeValue(response.getOutputStream(),authResponse);
+            }
+        }
+    }
 
 }
