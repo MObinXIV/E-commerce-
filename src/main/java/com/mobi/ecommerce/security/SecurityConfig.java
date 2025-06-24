@@ -37,7 +37,9 @@ public class SecurityConfig {
     private static final String[] WHITE_LIST_URL = {
             "/api/v1/auth/**",
             "/api/v1/admin/register",
+            "/api/v1/product",
             "/api/v1/admin/login",
+            "/v1/api-docs",
             "/v2/api-docs",
             "/v3/api-docs",
             "/v3/api-docs/**",
@@ -76,7 +78,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000")); // Allow frontend origin
+        configuration.setAllowedOrigins(List.of("http://localhost:5173")); // Allow frontend origin
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*")); // Allow all headers
         configuration.setAllowCredentials(true); // Allow cookies/auth headers

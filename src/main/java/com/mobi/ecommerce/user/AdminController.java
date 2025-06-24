@@ -3,6 +3,7 @@ package com.mobi.ecommerce.user;
 import com.mobi.ecommerce.auth.AuthenticationRequest;
 import com.mobi.ecommerce.auth.AuthenticationResponse;
 import com.mobi.ecommerce.auth.RegistrationRequest;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,6 +13,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/admin")
+@PreAuthorize("hasRole('ADMIN')")
+
 public class AdminController {
    private final AdminService adminService;
     public AdminController(AdminService adminService) {
