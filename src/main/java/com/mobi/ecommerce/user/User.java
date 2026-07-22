@@ -1,6 +1,7 @@
 package com.mobi.ecommerce.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mobi.ecommerce.cart.Cart;
 import com.mobi.ecommerce.order.Order;
 import com.mobi.ecommerce.product.Product;
 import com.mobi.ecommerce.role.RoleType;
@@ -47,7 +48,7 @@ public class User implements UserDetails , Principal {
             name = "email",
             nullable = false,
             columnDefinition = "TEXT",
-            updatable = false // Prevents email from being updated
+            updatable = false 
     )
     private String email;
 
@@ -93,14 +94,6 @@ public class User implements UserDetails , Principal {
     )
     private List <Product> products;
 
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
     @OneToMany(
             mappedBy = "user",
             orphanRemoval = true,
@@ -109,26 +102,29 @@ public class User implements UserDetails , Principal {
     )
     private List <Order> orders;
 
+    @OneToOne(mappedBy = "user",orphanRemoval = true,cascade = {CascadeType.PERSIST, CascadeType.REMOVE,CascadeType.MERGE})
+    private Cart cart;
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
 
     public User() {
     }
 
-    public User(UUID id, String firstName, String lastName, String email, String password, LocalDateTime createdAt, LocalDateTime lastModifiedDate, boolean accountLocked, boolean accountEnabled, String phoneNumber, Gender gender, List<User_Role> userRoles, List<Product> products, List<Order> orders) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.createdAt = createdAt;
-        this.lastModifiedDate = lastModifiedDate;
-        this.accountLocked = accountLocked;
-        this.accountEnabled = accountEnabled;
-        this.phoneNumber = phoneNumber;
-        this.gender = gender;
-        this.userRoles = userRoles;
-        this.products = products;
-        this.orders = orders;
-    }
 
     public User(String firstName, String lastName, String email, String password, LocalDateTime createdAt, LocalDateTime lastModifiedDate, boolean accountLocked, boolean accountEnabled, String phoneNumber, Gender gender, List<User_Role> userRoles, List<Product> products, List<Order> orders) {
         this.firstName = firstName;
@@ -173,6 +169,7 @@ public class User implements UserDetails , Principal {
             orders.add(order);
         order.setUser(this);
     }
+
     public void removeRole(User_Role userRole){
         userRoles.remove(userRole);
         userRole.setUser(this);
@@ -201,7 +198,7 @@ public class User implements UserDetails , Principal {
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return !accountLocked;
     }
 
     @Override

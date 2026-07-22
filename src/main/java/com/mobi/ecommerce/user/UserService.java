@@ -31,7 +31,7 @@ public class UserService {
      * delete User
      * update user data
      * */
-     UserResponse getUser(){
+     public UserResponse getUser(){
           User user = securityUtils.getAuthenticatedUser();
           return userMapper.toUserResponse(user);
      }

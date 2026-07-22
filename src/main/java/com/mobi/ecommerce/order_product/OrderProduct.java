@@ -4,12 +4,14 @@ import com.mobi.ecommerce.order.Order;
 import com.mobi.ecommerce.product.Product;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity(name = "OrderProduct")
 @Table (name = "order_product")
+@EntityListeners(AuditingEntityListener.class)
 public class OrderProduct {
     @EmbeddedId
     private OrderProductId id;
@@ -56,7 +58,7 @@ public class OrderProduct {
         this.order = order;
         this.createdAt = createdAt;
         this.lastModifiedDate = lastModifiedDate;
-        this.price = price;  // ✅ Assign actual price
+        this.price = price;
         this.quantity=quantity;
     }
 

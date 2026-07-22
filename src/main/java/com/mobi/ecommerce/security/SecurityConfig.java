@@ -49,7 +49,7 @@ public class SecurityConfig {
             "/configuration/security",
             "/swagger-ui/**",
             "/webjars/**",
-            "/api/v1/auth/activate/**", // ✅ Corrected wildcard pattern
+            "/api/v1/auth/activate/**",
             "/swagger-ui.html"
     };
 

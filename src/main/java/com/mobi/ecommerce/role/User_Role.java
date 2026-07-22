@@ -32,8 +32,8 @@ public class User_Role {
     public User_Role(User user, Role role) {
         this.user = user;
         this.role = role;
-        this.id = new User_RoleId(user.getId(), role.getId()); // ✅ Fix: Initialize ID
-        this.createdAt = LocalDateTime.now(); // ✅ Optional: Auto-set timestamp
+        this.id = new User_RoleId(user.getId(), role.getId());
+        this.createdAt = LocalDateTime.now();
     }
 
     public User_RoleId getId() {

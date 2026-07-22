@@ -93,7 +93,6 @@ public class OrderService {
         }
         Float shippingFee=  totalPrice.multiply(BigDecimal.valueOf(0.10))
                 .setScale(0, BigDecimal.ROUND_UP).floatValue();
-        order.setShippingFee(shippingFee);
         // Set final total price and update order
         order.setOrderProducts(orderProducts);
 
@@ -101,15 +100,16 @@ public class OrderService {
 
         order.setShippingFee(shippingFee);
         user.addOrder(order);
+        orderRepository.save(order);
         return orderMapper.toOrderResponse(order);
     }
     private void applyLock(Order order){
         LocalDateTime twoDaysAgo = LocalDateTime.now().minusDays(2);
 
         if(order.getCreatedAt().isBefore(twoDaysAgo)&&!order.isLocked())
-            order.setLocked(true);
+        {order.setLocked(true);
             order.setOrderStatus(OrderStatus.SHIPPED);
-            orderRepository.save(order);
+            orderRepository.save(order);}
     }
     public List<OrderResponse> getAllOrders(){
         User user = securityUtils.getAuthenticatedUser();
@@ -145,7 +145,7 @@ public class OrderService {
             order.setShippingAddress(request.getShippingAddress());
             isModified = true;
         }
-        // ✅ Retrieve updated product list from the request
+        // Retrieve updated product list from the request
         List<OrderProductRequest> updatedProducts = request.getProducts();
 
         if(updatedProducts!=null && !updatedProducts.isEmpty()){
@@ -166,17 +166,13 @@ public class OrderService {
                         orderProducts.remove(orderProduct);
                         isModified=true;
                     }
-                    // ✅ If the quantity is different, update it
-
                     else if (orderProduct.getQuantity() != productRequest.getQuantity()){
                         int quantityDiff = productRequest.getQuantity() - orderProduct.getQuantity(); // Calculate difference
                         Product product = orderProduct.getProduct(); // Get the associated product
-                        // ❌ If increasing quantity, ensure sufficient stock is available
                         if (quantityDiff > 0 && product.getStock() < quantityDiff) {
                             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                                     "Insufficient stock for: " + product.getProductName());
                         }
-                        // ✅ Adjust stock based on the quantity difference
                         product.setStock(product.getStock()-quantityDiff);
                         productRepository.save(product);
                         // update order product
@@ -186,7 +182,7 @@ public class OrderService {
                         isModified = true;
                     }
                 }else {
-                    // ❌ Prevent adding new products to an existing order
+                    //Prevent adding new products to an existing order
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot add new products to an existing order");
                 }
             }
@@ -194,22 +190,22 @@ public class OrderService {
         if (!isModified) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No changes detected in the update request");
         }
-        // ✅ Recalculate total price based on updated products
+        //Recalculate total price based on updated products
         BigDecimal totalPrice = order.getOrderProducts().stream()
                 .map(OrderProduct::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add); // Sum all product prices
-        // ✅ Calculate shipping fee as 10% of total price, rounded up
+        //Calculate shipping fee as 10% of total price, rounded up
         float shippingFee = totalPrice.multiply(BigDecimal.valueOf(0.10))
                 .setScale(0, BigDecimal.ROUND_UP).floatValue();
-        // ✅ Update order total price and shipping fee
+        //Update order total price and shipping fee
         order.setTotalPrice(totalPrice.add(BigDecimal.valueOf(shippingFee)));
         order.setShippingFee(shippingFee);
         order.setLastModifiedDate(LocalDateTime.now());
 
-        // ✅ Save updated order to database
+        //Save updated order to database
         orderRepository.save(order);
 
-        // ✅ Return the updated order response
+        //Return the updated order response
         return orderMapper.toOrderResponse(order);
     }
 
@@ -219,7 +215,7 @@ public class OrderService {
         Order order = orderRepository.findByIdAndUserId(orderId, user.getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found"));
 
-        // ❌ Prevent deletion if order is locked or shipped
+        //Prevent deletion if order is locked or shipped
         if (order.isLocked() ) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot delete a locked or shipped order");
         }

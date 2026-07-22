@@ -17,7 +17,7 @@ public class RoleInitializer {
                         new Role(RoleType.USER),
                         new Role(RoleType.ADMIN)
                 ));
-                System.out.println("✅ Default roles inserted!");
+                System.out.println("Default roles inserted!");
             }
         };
     }

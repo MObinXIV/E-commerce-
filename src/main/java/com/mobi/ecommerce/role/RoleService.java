@@ -1,7 +1,6 @@
 package com.mobi.ecommerce.role;
 
 import org.springframework.stereotype.Service;
-import java.util.Optional;
 
 @Service
 public class RoleService {

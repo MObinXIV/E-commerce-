@@ -2,6 +2,7 @@ package com.mobi.ecommerce.role;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,7 +19,7 @@ public class Role {
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
             mappedBy = "role"
     )
-    private List<User_Role> userRoles;
+    private List<User_Role> userRoles=new ArrayList<>();
 
     public Role(UUID id, RoleType name, List<User_Role> userRoles) {
         this.id = id;

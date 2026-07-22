@@ -43,7 +43,6 @@ public class ProductService {
         product.setStock(productRequest.getStock());
         product.setUser(user);
         product.setCreatedAt(LocalDateTime.now());
-        product.setUpdatedAt(LocalDateTime.now());
         user.addProduct(product);
         product =productRepository.save(product);
         return productMapper.toProductResponse(product);
@@ -92,7 +91,7 @@ public class ProductService {
 
     public ProductResponse getProductById(UUID productId) {
         User user = securityUtils.getAuthenticatedUser();
-        Product product= productRepository.findByIdAndUserId(productId, user.getId())
+        Product product= productRepository.findById(productId)
                 .orElseThrow(() -> new NotFound("Product not found"));
     return productMapper.toProductResponse(product);
     }

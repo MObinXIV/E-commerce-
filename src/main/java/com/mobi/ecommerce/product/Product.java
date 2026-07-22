@@ -1,6 +1,7 @@
 package com.mobi.ecommerce.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mobi.ecommerce.cartItem.CartItem;
 import com.mobi.ecommerce.order_product.OrderProduct;
 import com.mobi.ecommerce.user.User;
 import jakarta.persistence.*;
@@ -48,10 +49,10 @@ public class Product {
     )
     private Integer stock; // Available quantity in inventory
     @CreatedDate
-    @Column ( name = "createdAt", nullable = false,updatable = false)
+    @Column ( name = "created_at", nullable = false,updatable = false)
     private LocalDateTime createdAt;
     @LastModifiedDate
-    @Column(name = "updatedAt", insertable = false)
+    @Column(name = "updated_at", insertable = false)
     private LocalDateTime updatedAt;
     @JsonIgnore
     @ManyToOne
@@ -62,9 +63,11 @@ public class Product {
     @OneToMany(mappedBy = "product", orphanRemoval = true)
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
+    private List<CartItem> cartItems = new ArrayList<>();
 
 
-    public Product(UUID id, String productName, String productDescription, BigDecimal productPrice, Integer stock, LocalDateTime createdAt, LocalDateTime updatedAt, User user, List<OrderProduct> orderProducts) {
+    public Product(UUID id, String productName, String productDescription, BigDecimal productPrice, Integer stock, LocalDateTime createdAt, LocalDateTime updatedAt, User user, List<OrderProduct> orderProducts, List<CartItem> cartItems) {
         this.id = id;
         this.productName = productName;
         this.productDescription = productDescription;
@@ -74,9 +77,9 @@ public class Product {
         this.updatedAt = updatedAt;
         this.user = user;
         this.orderProducts = orderProducts;
+        this.cartItems = cartItems;
     }
-
-    public Product(String productName, String productDescription, BigDecimal productPrice, Integer stock, LocalDateTime createdAt, LocalDateTime updatedAt, User user, List<OrderProduct> orderProducts) {
+    public Product(String productName, String productDescription, BigDecimal productPrice, Integer stock, LocalDateTime createdAt, LocalDateTime updatedAt, User user, List<OrderProduct> orderProducts, List<CartItem> cartItems) {
         this.productName = productName;
         this.productDescription = productDescription;
         this.productPrice = productPrice;
@@ -85,8 +88,8 @@ public class Product {
         this.updatedAt = updatedAt;
         this.user = user;
         this.orderProducts = orderProducts;
+        this.cartItems = cartItems;
     }
-
     public String getProductName() {
         return productName;
     }
@@ -180,5 +183,13 @@ public class Product {
 
     public void setProductPrice(BigDecimal productPrice) {
         this.productPrice = productPrice;
+    }
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
     }
 }

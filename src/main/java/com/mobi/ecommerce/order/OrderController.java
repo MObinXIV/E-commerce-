@@ -20,7 +20,6 @@ public class OrderController {
         this.productService = productService;
     }
     @PostMapping
-//    @PreAuthorize("hasAuthority('User')")
     public ResponseEntity<OrderResponse>createOrder(@Valid @RequestBody OrderRequest request) {
         OrderResponse orderResponse = orderService.createOrder(request);
         return ResponseEntity.ok(orderResponse);

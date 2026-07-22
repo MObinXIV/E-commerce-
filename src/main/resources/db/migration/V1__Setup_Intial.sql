@@ -9,6 +9,7 @@ CREATE TABLE app_user (
                           account_locked BOOLEAN NOT NULL DEFAULT FALSE,
                           account_enabled BOOLEAN NOT NULL DEFAULT FALSE,
                           phone_number VARCHAR(15) NOT NULL,
+                          gender VARCHAR(10) NOT NULL DEFAULT 'OTHER',
                           CONSTRAINT user_unique_email UNIQUE (email),
                           CONSTRAINT user_unique_phone_number UNIQUE (phone_number)
 );
@@ -65,4 +66,28 @@ CREATE TABLE order_product (
                                PRIMARY KEY (order_id, product_id),
                                CONSTRAINT orderProduct_order_id_fk FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
                                CONSTRAINT orderProduct_product_id_fk FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE
+);
+CREATE TABLE cart (
+                      id UUID PRIMARY KEY,
+                      user_id UUID NOT NULL UNIQUE,
+                      created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                      updated_at TIMESTAMP WITHOUT TIME ZONE,
+                      CONSTRAINT user_cart_fk FOREIGN KEY (user_id)
+                          REFERENCES app_user(id) ON DELETE CASCADE
+);
+
+CREATE TABLE cart_item (
+                           product_id UUID NOT NULL,
+                           cart_id UUID NOT NULL,
+                           quantity INTEGER NOT NULL CHECK (quantity > 0),
+                           price_at_add_time DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+                           created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                           updated_at TIMESTAMP WITHOUT TIME ZONE,
+                           PRIMARY KEY (product_id, cart_id),
+
+                           CONSTRAINT fk_cart_item_product
+                               FOREIGN KEY (product_id) REFERENCES product(id) ON DELETE CASCADE,
+
+                           CONSTRAINT fk_cart_item_cart
+                               FOREIGN KEY (cart_id) REFERENCES cart(id) ON DELETE CASCADE
 );

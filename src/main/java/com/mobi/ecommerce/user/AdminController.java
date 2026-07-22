@@ -27,7 +27,6 @@ public class AdminController {
         return ResponseEntity.ok(adminService.registerAdmin(request));
     }
 
-    // ✅ Admin Login
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody @Valid AuthenticationRequest request) {
         return ResponseEntity.ok(adminService.login(request));
